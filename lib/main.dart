@@ -1,19 +1,24 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'app/config/string_app.dart';
 import 'app/config/theme_app.dart';
+import 'app/config/utils.dart';
 import 'app/data_source/api_clients.dart';
-import 'app/modules/pokemon/pokemon_binding.dart';
-import 'app/modules/pokemon/pokemon_page.dart';
+import 'app/modules/home/home_binding.dart';
+import 'app/modules/home/home_page.dart';
 import 'app/repository/main_repository.dart';
+import 'app/services/listeners.dart';
+import 'app/services/push_notification_service.dart';
 
 ThemeApp themeApp = ThemeApp();
 
 void main() async {
   themeApp.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await PushNotificationService.initializeApp();
 
   final apiClients = ApiClients();
   final mainRepository = MainRepository(apiClients);
@@ -27,7 +32,42 @@ void main() async {
   runApp(AppGestion());
 }
 
-class AppGestion extends StatelessWidget {
+class AppGestion extends StatefulWidget {
+  @override
+  State<AppGestion> createState() => _AppGestionState();
+}
+
+class _AppGestionState extends State<AppGestion> {
+  @override
+  void initState() {
+    super.initState();
+    Utils.solicitarEnvioSMS();
+
+    PushNotificationService.messageStream
+        .listen((message) async => Listeners.listenPush(message));
+    FirebaseMessaging.onBackgroundMessage(
+        Listeners.firebaseMessagingBackgroundHandler);
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _theme = ThemeData(
+      fontFamily: 'TitilliumWeb',
+      primarySwatch: themeApp.primarySwatch,
+    );
+
+    return GetMaterialApp(
+      title: titleAppStr,
+      debugShowCheckedModeBanner: false,
+      theme: _theme,
+      home: HomePage(),
+      initialBinding: PokemonBinding(),
+    );
+  }
+}
+
+class _AppGestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _theme = ThemeData(
@@ -37,7 +77,7 @@ class AppGestion extends StatelessWidget {
       title: titleAppStr,
       debugShowCheckedModeBanner: false,
       theme: _theme,
-      home: PokemonPage(),
+      home: HomePage(),
       initialBinding: PokemonBinding(),
     );
   }

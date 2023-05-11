@@ -1,5 +1,5 @@
 import 'package:enviostoresms/app/global_widgets/item_pokemon.dart';
-import 'package:enviostoresms/app/modules/pokemon/pokemon_controller.dart';
+import 'package:enviostoresms/app/modules/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

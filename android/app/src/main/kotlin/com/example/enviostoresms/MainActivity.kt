@@ -1,4 +1,4 @@
-package com.example.enviostoresms
+package com.enviostore.enviosms
 
 import io.flutter.embedding.android.FlutterActivity
 

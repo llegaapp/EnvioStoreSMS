@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "837811672428",
+    "project_id": "enviostore-1cf53",
+    "storage_bucket": "enviostore-1cf53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837811672428:android:df8a7c01f2276e19898f49",
+        "android_client_info": {
+          "package_name": "com.enviostore.enviosms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837811672428-uimnoirv891194gnrbju7bec8qqgraco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOyQGm2jS1avNpaBzW9u6VeVDwhdSSKE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837811672428-uimnoirv891194gnrbju7bec8qqgraco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

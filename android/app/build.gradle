@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 33
@@ -43,11 +44,19 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.pokemon_heb"
+        applicationId "com.enviostore.enviosms"
         minSdkVersion 23
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
+    signingConfigs {
+        release {
+            storeFile file("keystore_prod.jks")
+            storePassword "banorte2016"
+            keyAlias "appclientes"
+            keyPassword "appclientes2016"
+        }
     }
 
     buildTypes {
@@ -57,6 +66,15 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
+
+
 }
 
 flutter {
@@ -65,4 +83,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

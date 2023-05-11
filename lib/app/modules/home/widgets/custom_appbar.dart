@@ -4,7 +4,7 @@ import 'package:enviostoresms/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../config/string_app.dart';
-import '../pokemon_controller.dart';
+import '../home_controller.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override

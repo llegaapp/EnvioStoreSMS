@@ -1,5 +1,5 @@
-import 'package:enviostoresms/app/config/constant.dart';
-import 'package:enviostoresms/main.dart';
+import 'package:background_sms/background_sms.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../data_source/prefered_controller.dart';
@@ -78,5 +78,23 @@ class Utils {
     Color statusColor = Color(int.parse(color));
 
     return statusColor;
+  }
+
+  static Future<bool> solicitarEnvioSMS() async {
+    var value = true;
+    var statusSMS = await Permission.sms.status;
+    if (!statusSMS.isGranted) {
+      value = await Permission.sms.request().isGranted;
+    }
+    return value;
+  }
+  static sendMessage(String phoneNumber, String message, {int? simSlot}) async {
+    var result = await BackgroundSms.sendMessage(
+        phoneNumber: phoneNumber, message: message, simSlot: simSlot);
+    if (result == SmsStatus.sent) {
+      print("Sent");
+    } else {
+      print("Failed");
+    }
   }
 }

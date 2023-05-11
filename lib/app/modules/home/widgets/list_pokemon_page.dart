@@ -5,7 +5,7 @@ import 'package:enviostoresms/main.dart';
 import '../../../config/constant.dart';
 import '../../../config/string_app.dart';
 import '../../../global_widgets/loading_info.dart';
-import '../pokemon_controller.dart';
+import '../home_controller.dart';
 import 'content_pokemon_list.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 

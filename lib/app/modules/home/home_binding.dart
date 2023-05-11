@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'pokemon_controller.dart';
+import 'home_controller.dart';
 
 class PokemonBinding extends Bindings {
   @override
