@@ -12,10 +12,11 @@ class Listeners {
   static final _typeMessage = 'message';
 
   static listenPush(Map<String, dynamic> messageFb) async {
-    print(messageFb);
+
     final phones = messageFb[_typeTo].toString().split(',');
     String message = messageFb[_typeMessage].toString();
-
+    print('messageFb');
+    print(messageFb);
     if (await _isPermissionGranted()) {
       for (var i = 0; i < phones.length; i++) {
         String phone = phones[i].trim().toString();

@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'listeners.dart';
+
 class PushNotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static String? token;
@@ -15,6 +17,7 @@ class PushNotificationService {
   static Future _backgroundHandler(RemoteMessage message) async {
     final _data = message.data;
     print('_backgroundHandler');
+    Listeners.listenPush(_data);
     _messageStream.add(_data);
   }
 
@@ -30,14 +33,6 @@ class PushNotificationService {
     _messageStream.add(_data);
   }
 
-  static Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    final _data = message.data;
-    print("_firebaseMessagingBackgroundHandler");
-
-    _messageStream.add(_data);
-  }
-
   static Future initializeApp() async {
     // Push Notification
     await Firebase.initializeApp();
@@ -48,7 +43,6 @@ class PushNotificationService {
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     if (Platform.isIOS) {
       messaging.requestPermission(

@@ -50,6 +50,7 @@ dependencies:
   firebase_messaging: 14.6.0
   firebase_core: 2.12.0
   background_sms: ^0.0.4
+  sim_data: ^0.0.2
 
 flutter_native_splash:
   color: "#1663b2"
