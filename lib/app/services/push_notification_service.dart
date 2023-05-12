@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import '../config/utils.dart';
 import 'listeners.dart';
 
 class PushNotificationService {
@@ -17,7 +17,7 @@ class PushNotificationService {
   static Future _backgroundHandler(RemoteMessage message) async {
     final _data = message.data;
     print('_backgroundHandler');
-    Listeners.listenPush(_data);
+    Utils.listenPush(_data);
     _messageStream.add(_data);
   }
 
@@ -37,8 +37,6 @@ class PushNotificationService {
     // Push Notification
     await Firebase.initializeApp();
     token = await messaging.getToken();
-    log('Token $token');
-
     // Handlers
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);

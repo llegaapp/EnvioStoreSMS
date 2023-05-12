@@ -41,14 +41,23 @@ class _AppGestionState extends State<AppGestion> {
   void initState() {
     super.initState();
     Utils.solicitarEnvioSMS();
+    Utils.solicitarStatusPhone();
+    Utils.areSimCards();
+
+    Utils.uuidGenerator(false);
+    print('Utils.prefs.uuidDevice');
+    print(Utils.prefs.uuidDevice);
 
     PushNotificationService.messageStream
-        .listen((message) async => Listeners.listenPush(message));
+        .listen((message) async => Utils.listenPush(message));
     setState(() {});
+    Utils.prefs.fireBaseToken = PushNotificationService.token!;
   }
 
   @override
   Widget build(BuildContext context) {
+    print('Utils.prefs.fireBaseToken');
+    print(Utils.prefs.fireBaseToken);
     var _theme = ThemeData(
       fontFamily: 'TitilliumWeb',
       primarySwatch: themeApp.primarySwatch,

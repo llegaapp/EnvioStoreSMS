@@ -2,11 +2,23 @@ import 'package:background_sms/background_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sim_data/sim_data.dart';
+import 'package:sim_data/sim_model.dart';
 import '../data_source/prefered_controller.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
+
 import 'string_app.dart';
 
 class Utils {
   static var prefs = Get.put(PreferedController());
+  static SimData? _simData;
+  static final _typeTo = 'to';
+  static final _typeMessage = 'message';
+  static Future<bool> _isPermissionGranted() async =>
+      await Permission.sms.status.isGranted;
+  static Future<bool?> get _supportCustomSim async =>
+      await BackgroundSms.isSupportCustomSim;
 
   static Color pokemonColor(String _type) {
     String color = '0xff000000';
@@ -88,6 +100,16 @@ class Utils {
     }
     return value;
   }
+
+  static Future<bool> solicitarStatusPhone() async {
+    var value = true;
+    var statusPhone = await Permission.phone.status;
+    if (!statusPhone.isGranted) {
+      value = await Permission.sms.request().isGranted;
+    }
+    return value;
+  }
+
   static sendMessage(String phoneNumber, String message, {int? simSlot}) async {
     var result = await BackgroundSms.sendMessage(
         phoneNumber: phoneNumber, message: message, simSlot: simSlot);
@@ -96,5 +118,66 @@ class Utils {
     } else {
       print("Failed");
     }
+  }
+
+  static String uuidGenerator(bool rebuild) {
+    var _uuid = Uuid();
+    String uuid = Utils.prefs.uuidDevice;
+    if (Utils.prefs.uuidDevice.isEmpty) {
+      uuid = _uuid.v1();
+    }
+    if (rebuild == true) uuid = _uuid.v1();
+    Utils.prefs.uuidDevice = uuid;
+    return uuid;
+  }
+
+  static Future<bool> areSimCards() async {
+    bool _areSimCards = false;
+    SimData simData;
+    try {
+      bool isGranted = await Utils.solicitarStatusPhone();
+      simData = await SimDataPlugin.getSimData();
+      _simData = simData;
+    } catch (e) {
+      debugPrint(e.toString());
+      _simData = null;
+    }
+    var cards = _simData?.cards.reversed.toList();
+
+    int? totalCards = cards?.length;
+    if (totalCards! > 0) {
+      _areSimCards = true;
+
+      if (Utils.prefs.currentSim == 0) {
+        Utils.prefs.currentSim = cards?.first.slotIndex;
+        Utils.prefs.currentSimName = cards?.first.carrierName;
+      }
+    }
+    print(Utils.prefs.currentSim.toString());
+    print('Utils.prefs.currentSimName.toString()');
+    print(Utils.prefs.currentSimName.toString());
+    return _areSimCards;
+  }
+  static listenPush(Map<String, dynamic> messageFb) async {
+    final phones = messageFb[_typeTo].toString().split(',');
+    String message = messageFb[_typeMessage].toString();
+    print('messageFb');
+    print(messageFb);
+    print(Utils.prefs.currentSimName!);
+    print(Utils.prefs.currentSim!+1);
+    if (await _isPermissionGranted()) {
+      for (var i = 0; i < phones.length; i++) {
+        String phone = phones[i].trim().toString();
+        print(phone);
+        if ((await _supportCustomSim)!)
+          Utils.sendMessage(phone, message,
+              simSlot: Utils.prefs.currentSim! + 1);
+        else
+          Utils.sendMessage(phone, message);
+      }
+      //
+
+    } else
+      Utils.solicitarEnvioSMS();
   }
 }

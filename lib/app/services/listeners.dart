@@ -12,24 +12,27 @@ class Listeners {
   static final _typeMessage = 'message';
 
   static listenPush(Map<String, dynamic> messageFb) async {
-
     final phones = messageFb[_typeTo].toString().split(',');
     String message = messageFb[_typeMessage].toString();
     print('messageFb');
     print(messageFb);
+    print(Utils.prefs.currentSimName!);
+    print(Utils.prefs.currentSim!+1);
     if (await _isPermissionGranted()) {
       for (var i = 0; i < phones.length; i++) {
         String phone = phones[i].trim().toString();
         print(phone);
-        Utils.sendMessage(phone, message, simSlot: 2);
+
+
+        if ((await _supportCustomSim)!)
+          Utils.sendMessage(phone, message,
+              simSlot: Utils.prefs.currentSim! + 1);
+        else
+          Utils.sendMessage(phone, message);
       }
       //
-      // if ((await _supportCustomSim)!)
-      //   Utils.sendMessage("2441071592", "Hello", simSlot: 2);
-      // else
-      //   Utils.sendMessage("2441071592", "Hello");
+
     } else
       Utils.solicitarEnvioSMS();
   }
-
 }

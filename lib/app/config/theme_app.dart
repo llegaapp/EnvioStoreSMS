@@ -9,8 +9,8 @@ class ThemeApp {
   Color colorGray = Color(0xFF83899C);
 
   Color colorPrimary = Color(0xffd9d9d9);
-  Color colorPrimaryRed = Color(0xffde002b);
-  Color colorPrimaryGeen = Color(0xff40a6ac);
+  Color colorPrimaryOrange = Color(0xfff76b20);
+  Color colorPrimaryBlue = Color(0xff006afe);
   Color colorShadowContainer = Color(0xffbcdcf2).withOpacity(0.5);
 
   TextStyle? textHeader;
@@ -19,6 +19,7 @@ class ThemeApp {
   TextStyle? text14boldBlack400;
   TextStyle? text16400Gray;
   TextStyle? text12Red;
+  TextStyle? text12Black;
   TextStyle? text12RedBold;
   TextStyle? text18boldBlack600;
   TextStyle? text20boldBlack;
@@ -36,11 +37,15 @@ class ThemeApp {
     text12dWhite = TextStyle(
         color: colorWhite, fontSize: 12, fontFamily: 'Titillium Web Black');
     text12Red = TextStyle(
-        color: colorPrimaryRed,
+        color: colorPrimaryOrange,
+        fontSize: 12,
+        fontFamily: 'Titillium Web Black');
+    text12Black = TextStyle(
+        color: colorBlack,
         fontSize: 12,
         fontFamily: 'Titillium Web Black');
     text12RedBold = TextStyle(
-      color: colorPrimaryRed,
+      color: colorPrimaryOrange,
       fontSize: 12,
       fontFamily: 'Titillium Web Black',
       fontWeight: FontWeight.w800,

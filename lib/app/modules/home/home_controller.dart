@@ -1,7 +1,11 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:enviostoresms/main.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:sim_data/sim_data.dart';
+import 'package:sim_data/sim_model.dart';
 import '../../config/constant.dart';
 import '../../config/string_app.dart';
 import '../../config/utils.dart';
@@ -20,6 +24,7 @@ class PokemonController extends GetxController {
   List<PokemonListModel> itemsPokemon = [];
   List<PokemonListModel> itemsPokemonSelected = [];
   List<PokemonListModel> itemsPokemonPaginator = [];
+  SimData? _simData;
 
   //paginator
   int totalItemsRouteSupPaginator = 0;
@@ -177,80 +182,98 @@ class PokemonController extends GetxController {
     update();
   }
 
-  openPokemonList(BuildContext _) {
+  onActionSelected(String value) {
+    if (value == '1') {}
+    if (value == '2') {}
+    if (value == '3') {
+      selectSimCard();
+    }
+
+    update();
+  }
+
+  selectSimCard() async {
+    var cards = _simData?.cards.reversed.toList();
+    SimData simData;
+    try {
+      bool isGranted = await Utils.solicitarStatusPhone();
+      if (!isGranted) return;
+      simData = await SimDataPlugin.getSimData();
+      _simData = simData;
+      update();
+    } catch (e) {
+      debugPrint(e.toString());
+      _simData = null;
+      update();
+    }
     Get.dialog(
       barrierDismissible: false,
       Container(
           child: AlertDialog(
         contentPadding: EdgeInsets.all(10.0),
         content: Container(
-          height: 450,
+          height: 250,
           child: Padding(
             padding: const EdgeInsets.only(
                 left: 10.0, right: 10.0, bottom: 10, top: 10),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                for (var _item in itemsPokemonSelected)
-                  Container(
-                    color: themeApp.colorPrimary,
-                    height: 70,
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            flex: 40, // 15%
-                            child: Container(
-                              color: themeApp.colorWhite,
-                              width: 40,
-                              child: Image.network(_item.img.toString()),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 150, // 15%
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    _item.name.toString(),
-                                    style: themeApp.text14boldBlack400,
-                                    textAlign: TextAlign.left,
-                                    overflow: TextOverflow.ellipsis,
+                Column(
+                  children: cards != null
+                      ? cards.isEmpty
+                          ? [Text(noHaySimCarsStr)]
+                          : cards
+                              .map(
+                                (SimCard card) => ListTile(
+                                  tileColor:
+                                      Utils.prefs.currentSim.toString() ==
+                                              card.slotIndex.toString()
+                                          ? themeApp.colorGrey
+                                          : null,
+                                  leading: Icon(
+                                    Icons.sim_card,
+                                    color: Utils.prefs.currentSim.toString() ==
+                                            card.slotIndex.toString()
+                                        ? themeApp.colorWhite
+                                        : null,
                                   ),
-                                  Flexible(
-                                      child: Button1(
-                                    height: 10,
-                                    label: eliminarDeMiEquipoStr,
-                                    // padding: EdgeInsets.all( 0),
-                                    style: themeApp.text12dWhite,
-                                    background: themeApp.colorPrimaryRed,
-                                    onPressed: () {
-                                      removePokemon(_item);
-                                      Get.back();
-                                    },
-                                  )),
-                                ],
-                              ),
-                            ),
+                                  title: Text(
+                                    'Sim ${card.slotIndex}',
+                                    style: themeApp.text14Black,
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        card.carrierName,
+                                        style: themeApp.text12Black,
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Utils.prefs.currentSim = card.slotIndex;
+                                    Utils.prefs.currentSimName =
+                                        card.carrierName;
+                                    update();
+                                    Get.back();
+                                  },
+                                ),
+                              )
+                              .toList()
+                      : [
+                          Center(
+                            child: Text(fallaCargaStr),
                           )
                         ],
-                      ),
-                    ),
-                  ),
+                ),
                 Flexible(
                     child: Button1(
-                  height: 20,
+                  height: 30,
                   label: cerrarStr,
-                  // padding: EdgeInsets.all( 0),
                   style: themeApp.text12dWhite,
-                  background: themeApp.colorPrimaryGeen,
+                  background: themeApp.colorPrimaryOrange,
                   onPressed: () {
                     Get.back();
                   },

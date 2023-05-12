@@ -1,14 +1,21 @@
-String get intercambioPokemonStr => 'Intercambio Pokémon';
+String get appTitle => 'Envío SMS EnvíoStore';
 String get cargandoInfoStr => 'Cargando pokemones...';
 String get nombreStr => 'Nombre: ';
 String get tipoStr => 'Tipo: ';
 String get agregarAmiEquipoStr => 'Agregar a mi equipo ';
 String get eliminarDeMiEquipoStr => 'Eliminar de mi equipo ';
 String get yaEsParteDeTuEquipoStr => 'Ya es parte de tu equipo';
-String get selecciona5PokemonStr =>
-    'Selecciona hasta 5 Pokémons para agregarlos a tu equipo';
+String get claveSecretaStr => 'Clave Secreta';
+String get deviceIdStr => 'Id del dispositivo';
+String get elementoCopiadoStr => 'Elemento copiado';
 String get cerrarStr => 'Cerrar';
 String get equipoCompletoStr => 'Tu equipo está completo';
 String get sincronizandoStr => 'Sincronizando';
 String get titleAppStr => 'Pokémon App';
 String get obteniendoDatosStr => 'Obteniendo datos';
+String get cambiarClaveStr => 'Cambiar la clave secreta';
+String get borraHistorialStr => 'Borrar el historial';
+String get seleccioneSimStr => 'Seleccione sim de envío';
+String get noHaySimCarsStr => 'No se econtraron Sim';
+String get fallaCargaStr => 'Failed to load data';
+String get enviarConStr => 'Enviar con el sim';

@@ -17,11 +17,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: themeApp.colorPrimary,
         elevation: 0,
         title: Text(
-          intercambioPokemonStr,
+          appTitle,
           style: themeApp.textHeader,
         ),
         actions: [
-
+          PopupMenuButton(
+            onSelected: _.onActionSelected,
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: '1',
+                  child: Text(cambiarClaveStr),
+                ),
+                PopupMenuItem(
+                  value: '2',
+                  child: Text(borraHistorialStr),
+                ),
+                PopupMenuItem(
+                  value: '3',
+                  child: Text(seleccioneSimStr),
+                ),
+              ];
+            },
+          ),
         ],
       ),
     );

@@ -141,7 +141,7 @@ class _ItemPokemonState extends State<ItemPokemon> {
                       ? Button1(
                           label: agregarAmiEquipoStr,
                           style: themeApp.text12dWhite,
-                          background: themeApp.colorPrimaryRed,
+                          background: themeApp.colorPrimaryOrange,
                           onPressed: widget.onPressed,
                         )
                       : Text(
