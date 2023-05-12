@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -45,8 +44,6 @@ class _AppGestionState extends State<AppGestion> {
 
     PushNotificationService.messageStream
         .listen((message) async => Listeners.listenPush(message));
-    FirebaseMessaging.onBackgroundMessage(
-        Listeners.firebaseMessagingBackgroundHandler);
     setState(() {});
   }
 

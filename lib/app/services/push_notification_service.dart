@@ -8,22 +8,33 @@ class PushNotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static String? token;
   static StreamController<Map<String, dynamic>> _messageStream =
-  StreamController.broadcast();
+      StreamController.broadcast();
   static Stream<Map<String, dynamic>> get messageStream =>
       _messageStream.stream;
 
   static Future _backgroundHandler(RemoteMessage message) async {
     final _data = message.data;
+    print('_backgroundHandler');
     _messageStream.add(_data);
   }
 
   static Future _onMessageHandler(RemoteMessage message) async {
     final _data = message.data;
+    print('_onMessageHandler');
     _messageStream.add(_data);
   }
 
   static Future _onMessageOpenApp(RemoteMessage message) async {
     final _data = message.data;
+    print('_onMessageOpenApp');
+    _messageStream.add(_data);
+  }
+
+  static Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    final _data = message.data;
+    print("_firebaseMessagingBackgroundHandler");
+
     _messageStream.add(_data);
   }
 
@@ -37,6 +48,7 @@ class PushNotificationService {
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     if (Platform.isIOS) {
       messaging.requestPermission(

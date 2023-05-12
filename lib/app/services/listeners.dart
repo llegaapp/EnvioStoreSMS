@@ -1,6 +1,4 @@
 import 'package:background_sms/background_sms.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../config/utils.dart';
@@ -32,12 +30,5 @@ class Listeners {
     } else
       Utils.solicitarEnvioSMS();
   }
-  static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    WidgetsFlutterBinding.ensureInitialized();
-    print("background");
-
-    print("******Handling a background message: ${message.data}");
-  }
-
 
 }
