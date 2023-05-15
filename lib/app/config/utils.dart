@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:background_sms/background_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import '../data_source/prefered_controller.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
 
+import '../models/phoneCompany.dart';
 import 'string_app.dart';
 
 class Utils {
@@ -102,10 +105,11 @@ class Utils {
   }
 
   static Future<bool> solicitarStatusPhone() async {
-    var value = true;
-    var statusPhone = await Permission.phone.status;
-    if (!statusPhone.isGranted) {
-      value = await Permission.sms.request().isGranted;
+    var value = false;
+    if (await Permission.phone.request().isGranted) {
+      value = true;
+    } else {
+      openAppSettings();
     }
     return value;
   }
@@ -133,6 +137,8 @@ class Utils {
 
   static Future<bool> areSimCards() async {
     bool _areSimCards = false;
+    List<PhoneCompany> itemsPhoneCompany = [];
+
     SimData simData;
     try {
       bool isGranted = await Utils.solicitarStatusPhone();
@@ -151,20 +157,29 @@ class Utils {
       if (Utils.prefs.currentSim == 0) {
         Utils.prefs.currentSim = cards?.first.slotIndex;
         Utils.prefs.currentSimName = cards?.first.carrierName;
+
+        for (var _item in cards!) {
+          PhoneCompany itemsCompany = new PhoneCompany();
+          itemsCompany.slotIndex = _item.slotIndex;
+          itemsCompany.companyName = _item.carrierName;
+          itemsPhoneCompany.add(itemsCompany);
+        }
+        Utils.prefs.itemsPhoneCompany = itemsPhoneCompany;
       }
     }
     print(Utils.prefs.currentSim.toString());
     print('Utils.prefs.currentSimName.toString()');
-    print(Utils.prefs.currentSimName.toString());
+    log(Utils.prefs.currentSimName.toString());
     return _areSimCards;
   }
+
   static listenPush(Map<String, dynamic> messageFb) async {
     final phones = messageFb[_typeTo].toString().split(',');
     String message = messageFb[_typeMessage].toString();
     print('messageFb');
     print(messageFb);
     print(Utils.prefs.currentSimName!);
-    print(Utils.prefs.currentSim!+1);
+    print(Utils.prefs.currentSim! + 1);
     if (await _isPermissionGranted()) {
       for (var i = 0; i < phones.length; i++) {
         String phone = phones[i].trim().toString();
@@ -176,7 +191,6 @@ class Utils {
           Utils.sendMessage(phone, message);
       }
       //
-
     } else
       Utils.solicitarEnvioSMS();
   }

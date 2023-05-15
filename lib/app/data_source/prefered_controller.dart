@@ -1,6 +1,7 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 
+import '../models/phoneCompany.dart';
 import '../models/pokemon.dart';
 
 class PreferedController extends GetxController {
@@ -24,4 +25,9 @@ class PreferedController extends GetxController {
   set currentSimName(String? val) => prefs.write('currentSimName', val);
   int? get currentSim => prefs.read('currentSim') ?? 0;
   set currentSim(int? val) => prefs.write('currentSim', val);
+
+  List<PhoneCompany> get itemsPhoneCompany =>
+      prefs.read('itemsPhoneCompany') ?? [];
+  set itemsPhoneCompany(List<PhoneCompany> val) =>
+      prefs.write('itemsPhoneCompany', val);
 }

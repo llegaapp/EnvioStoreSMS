@@ -41,7 +41,6 @@ class _AppGestionState extends State<AppGestion> {
   void initState() {
     super.initState();
     Utils.solicitarEnvioSMS();
-    Utils.solicitarStatusPhone();
     Utils.areSimCards();
 
     Utils.uuidGenerator(false);
