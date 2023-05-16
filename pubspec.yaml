@@ -52,7 +52,6 @@ dependencies:
   background_sms: ^0.0.4
   sim_data: ^0.0.2
   uuid: ^3.0.7
-  cool_alert: ^2.0.1
 
 flutter_native_splash:
   color: "#1663b2"

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:enviostoresms/main.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sim_data/sim_data.dart';
@@ -11,6 +12,7 @@ import '../../config/string_app.dart';
 import '../../config/utils.dart';
 import '../../data_source/constant_ds.dart';
 import '../../global_widgets/button1.dart';
+import '../../global_widgets/button2.dart';
 import '../../models/paginator.dart';
 import '../../models/phoneCompany.dart';
 import '../../models/pokemon.dart';
@@ -184,8 +186,23 @@ class PokemonController extends GetxController {
   }
 
   onActionSelected(String value) {
-    if (value == '1') {}
-    if (value == '2') {}
+    if (value == '1') {
+      confirmDialog(
+          title: cambiarClaveStr,
+          onPressed: () {
+            Utils.uuidGenerator(true);
+            update();
+            Get.back();
+          });
+    }
+    if (value == '2') {
+      confirmDialog(
+          title: borraHistorialMensajesStr,
+          onPressed: () {
+            update();
+            Get.back();
+          });
+    }
     if (value == '3') {
       selectSimCard();
     }
@@ -194,16 +211,12 @@ class PokemonController extends GetxController {
   }
 
   selectSimCard() async {
-    PhoneCompany cards = new PhoneCompany();
-    SimData simData;
+    List<PhoneCompany> cards = Utils.prefs.itemsPhoneCompany;
     bool isGranted = false;
     try {
       isGranted = await Utils.solicitarStatusPhone();
       if (!isGranted) return;
       if (loading) return;
-      loading = true;
-      simData = await SimDataPlugin.getSimData();
-      _simData = simData;
       loading = false;
       update();
     } catch (e) {
@@ -225,55 +238,68 @@ class PokemonController extends GetxController {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Column(
-                    children: cards != null
-                        ? cards.isEmpty
-                            ? [Text(noHaySimCarsStr)]
-                            : cards
-                                .map(
-                                  (SimCard card) => ListTile(
-                                    tileColor:
-                                        Utils.prefs.currentSim.toString() ==
-                                                card.slotIndex.toString()
-                                            ? themeApp.colorGrey
-                                            : null,
-                                    leading: Icon(
-                                      Icons.sim_card,
-                                      color:
-                                          Utils.prefs.currentSim.toString() ==
-                                                  card.slotIndex.toString()
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 200.0,
+                          height: 200.0,
+                          child: ListView.builder(
+                              key: PageStorageKey(0),
+                              itemCount: cards.length,
+                              itemBuilder: (BuildContext ctxt, int index) {
+                                return cards.length == 0
+                                    ? Container(
+                                        child: Text(fallaCargaStr),
+                                      )
+                                    : ListTile(
+                                        tileColor:
+                                            Utils.prefs.currentSim.toString() ==
+                                                    cards[index]
+                                                        .slotIndex
+                                                        .toString()
+                                                ? themeApp.colorGrey
+                                                : null,
+                                        leading: Icon(
+                                          Icons.sim_card,
+                                          color: Utils.prefs.currentSim
+                                                      .toString() ==
+                                                  cards[index]
+                                                      .slotIndex
+                                                      .toString()
                                               ? themeApp.colorWhite
                                               : null,
-                                    ),
-                                    title: Text(
-                                      'Sim ${card.slotIndex}',
-                                      style: themeApp.text14Black,
-                                    ),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          card.carrierName,
-                                          style: themeApp.text12Black,
                                         ),
-                                      ],
-                                    ),
-                                    onTap: () {
-                                      Utils.prefs.currentSim = card.slotIndex;
-                                      Utils.prefs.currentSimName =
-                                          card.carrierName;
-                                      update();
-                                      Get.back();
-                                    },
-                                  ),
-                                )
-                                .toList()
-                        : [
-                            Center(
-                              child: Text(fallaCargaStr),
-                            )
-                          ],
+                                        title: Text(
+                                          'Sim ${cards[index].slotIndex}',
+                                          style: themeApp.text14Black,
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              cards[index]
+                                                  .companyName
+                                                  .toString(),
+                                              style: themeApp.text12Black,
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          Utils.prefs.currentSim =
+                                              cards[index].slotIndex;
+                                          Utils.prefs.currentSimName =
+                                              cards[index].companyName;
+                                          update();
+                                          Get.back();
+                                        },
+                                      );
+                              }),
+                        ),
+                      ],
+                    ),
                   ),
                   Flexible(
                       child: Button1(
@@ -293,5 +319,65 @@ class PokemonController extends GetxController {
       );
     else
       openAppSettings();
+  }
+
+  confirmDialog({required String title, required VoidCallback? onPressed}) {
+    Get.dialog(Container(
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        contentPadding: EdgeInsets.only(top: 15, bottom: 0, left: 0, right: 0),
+        buttonPadding:
+            EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 20),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 20),
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: themeApp.text18boldBlack600,
+                ),
+              ),
+              Text(
+                aplicarCambiosStr,
+                style: themeApp.text16400Black,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Flexible(
+                  flex: 50, // 15%
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: Button2(
+                        title: buttonCancelaStr,
+                        color: themeApp.colorShadowContainer,
+                        onPressed: () {
+                          Get.back();
+                        }),
+                  )),
+              Flexible(
+                  flex: 50, // 15%
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: Button2(
+                      title: buttonConfirmStr,
+                      style: themeApp.text12dWhite,
+                      color: themeApp.colorPrimaryOrange,
+                      onPressed: onPressed,
+                    ),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    ));
   }
 }

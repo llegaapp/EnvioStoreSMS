@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'list_pokemon_page.dart';
+import 'list_sms_page.dart';
 import '../home_controller.dart';
 
 class ShowHome extends StatelessWidget {
@@ -9,7 +9,7 @@ class ShowHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<PokemonController>(
       builder: (_) => Container(
-        child: ListPokemonPage(),
+        child: ListSmsPage(),
       ),
     );
   }

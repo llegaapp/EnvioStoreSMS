@@ -13,6 +13,8 @@ class ThemeApp {
   Color colorPrimaryBlue = Color(0xff006afe);
   Color colorShadowContainer = Color(0xffbcdcf2).withOpacity(0.5);
 
+  TextStyle? textButton;
+
   TextStyle? textHeader;
   TextStyle? text12dWhite;
   TextStyle? text14Black;
@@ -21,13 +23,21 @@ class ThemeApp {
   TextStyle? text12Red;
   TextStyle? text12Black;
   TextStyle? text12RedBold;
+  TextStyle? text16400Black;
   TextStyle? text18boldBlack600;
+  TextStyle? text16boldBlack400;
+  TextStyle? text14boldBlack300;
   TextStyle? text20boldBlack;
 
   init() {
     primarySwatch = white;
     AppBarTheme(
       color: Colors.white,
+    );
+    textButton = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
     );
     textHeader = TextStyle(
         color: colorBlack,
@@ -41,9 +51,7 @@ class ThemeApp {
         fontSize: 12,
         fontFamily: 'Titillium Web Black');
     text12Black = TextStyle(
-        color: colorBlack,
-        fontSize: 12,
-        fontFamily: 'Titillium Web Black');
+        color: colorBlack, fontSize: 12, fontFamily: 'Titillium Web Black');
     text12RedBold = TextStyle(
       color: colorPrimaryOrange,
       fontSize: 12,
@@ -62,6 +70,21 @@ class ThemeApp {
       fontSize: 16,
       fontWeight: FontWeight.w400,
     );
+    text16400Black = TextStyle(
+      color: colorBlack,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    );
+    text16boldBlack400 = TextStyle(
+        color: colorBlack,
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+        fontFamily: 'TitilliumWeb Web');
+    text14boldBlack300 = TextStyle(
+        color: colorBlack,
+        fontWeight: FontWeight.w300,
+        fontSize: 14,
+        fontFamily: 'TitilliumWeb Web');
 
     text18boldBlack600 = TextStyle(
         color: colorBlack,
@@ -75,6 +98,7 @@ class ThemeApp {
         fontSize: 20,
         fontFamily: 'TitilliumWeb Black');
   }
+
   MaterialColor white = const MaterialColor(
     0xFFFFFFFF,
     const <int, Color>{

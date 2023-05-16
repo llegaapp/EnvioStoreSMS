@@ -12,7 +12,7 @@ import '../home_controller.dart';
 import 'content_pokemon_list.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
-class ListPokemonPage extends StatelessWidget {
+class ListSmsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bootstrapGridParameters(gutterSize: 10);

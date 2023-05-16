@@ -7,6 +7,18 @@ class PhoneCompany {
     this.slotIndex,
     this.companyName,
   });
+  factory PhoneCompany.fromJson(Map<String, dynamic> json) {
+    return PhoneCompany(
+      slotIndex: json['slotIndex'] == null ? '' : json['slotIndex'],
+      companyName: json['companyName'] == null ? '' : json['companyName'],
+    );
+  }
+  Map<String, dynamic> toJson(PhoneCompany item) {
+    return <String, dynamic>{
+      'slotIndex': item.slotIndex,
+      'companyName': item.companyName,
+    };
+  }
 
   factory PhoneCompany.Copy(PhoneCompany o) {
     return PhoneCompany(

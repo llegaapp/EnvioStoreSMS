@@ -17,7 +17,7 @@ class PushNotificationService {
   static Future _backgroundHandler(RemoteMessage message) async {
     final _data = message.data;
     print('_backgroundHandler');
-    Utils.listenPush(_data);
+    Listeners.listenPush(_data);
     _messageStream.add(_data);
   }
 
