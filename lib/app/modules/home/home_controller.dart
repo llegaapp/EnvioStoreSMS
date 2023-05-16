@@ -220,9 +220,10 @@ class PokemonController extends GetxController {
     if (value == '2') {
       confirmDialog(
           title: borraHistorialMensajesStr,
-          onPressed: () {
-            update();
+          onPressed: () async {
+            await Get.find<MainRepository>().dropSmsDB();
             Get.back();
+            refresh();
           });
     }
     if (value == '3') {
