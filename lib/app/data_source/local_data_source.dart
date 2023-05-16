@@ -48,8 +48,6 @@ class LocalDB {
     String where = '';
     if (bySend) where = 'WHERE send= 1';
     String query = "SELECT * FROM SMS $where ORDER BY ID DESC ";
-    print(bySend);
-    print(query);
     final List<Map<String, dynamic>> itemsMap = await database.rawQuery(query);
     return List.generate(
         itemsMap.length,

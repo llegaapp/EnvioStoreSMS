@@ -23,3 +23,5 @@ String get enviarConStr => 'Enviar con el sim';
 String get buttonConfirmStr => 'Confirmar';
 String get buttonCancelaStr => 'Cancelar';
 String get aplicarCambiosStr => '¿Deseas aplicar cambios?';
+String get noEntregadoStr => 'No entregado';
+String get reenviarMensajeStr => 'Reenviar mensaje';

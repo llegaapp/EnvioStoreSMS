@@ -49,7 +49,7 @@ class ResponsiveApp {
   // Boton
   get buttonRadius => setWidth(15);
   get inputTextRadius => setWidth(15);
-  get containerRadius => setWidth(5);
+  get containerRadius => setWidth(20);
 
   // Text size
   get bodyText1 => setSp(12);

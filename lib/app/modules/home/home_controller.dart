@@ -16,13 +16,18 @@ import '../../global_widgets/button2.dart';
 import '../../models/paginator.dart';
 import '../../models/phoneCompany.dart';
 import '../../models/pokemon.dart';
+import '../../models/smsPush.dart';
 import '../../repository/main_repository.dart';
 
 import 'package:dio/dio.dart';
 
 class PokemonController extends GetxController {
   bool loading = false;
+  bool wait = false;
   Dio dio = Dio();
+  late List<SmsPush> itemsSms = [];
+  late List<SmsPush> itemsSmsAux = [];
+
   late Map<String, dynamic> result;
   List<PokemonListModel> itemsPokemon = [];
   List<PokemonListModel> itemsPokemonSelected = [];
@@ -60,6 +65,23 @@ class PokemonController extends GetxController {
     ever(_paginationFilter, (_) => loadListPokemon());
     _changePaginationFilter(0, _limitPagination);
     //paginator
+    await loadData();
+  }
+
+  waits(bool value) {
+    wait = value;
+    update();
+  }
+
+  loadData() async {
+    if (wait) return;
+    waits(true);
+    itemsSms.clear();
+    itemsSms = await Get.find<MainRepository>().getSmsList(false);
+    print('loadData');
+    print(itemsSms.toString());
+    itemsSmsAux = itemsSms;
+    waits(false);
   }
 
   syncDialog(String subtitle) {
