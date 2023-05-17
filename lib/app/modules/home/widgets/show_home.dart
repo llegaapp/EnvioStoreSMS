@@ -7,7 +7,7 @@ import '../home_controller.dart';
 class ShowHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PokemonController>(
+    return GetBuilder<HomeController>(
       builder: (_) => Container(
         child: ListSmsPage(),
       ),

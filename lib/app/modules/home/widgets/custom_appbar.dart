@@ -12,7 +12,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PokemonController>(
+    return GetBuilder<HomeController>(
       builder: (_) => AppBar(
         backgroundColor: themeApp.colorPrimary,
         elevation: 0,

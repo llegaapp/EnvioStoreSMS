@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:enviostoresms/main.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sim_data/sim_data.dart';
@@ -21,7 +20,7 @@ import '../../repository/main_repository.dart';
 
 import 'package:dio/dio.dart';
 
-class PokemonController extends GetxController {
+class HomeController extends GetxController {
   bool loading = false;
   bool wait = false;
   Dio dio = Dio();
@@ -82,6 +81,8 @@ class PokemonController extends GetxController {
     print(itemsSms.toString());
     itemsSmsAux = itemsSms;
     waits(false);
+    Utils.uuidGenerator(true);
+    refresh();
   }
 
   syncDialog(String subtitle) {

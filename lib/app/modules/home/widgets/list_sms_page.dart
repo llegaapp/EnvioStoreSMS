@@ -17,7 +17,7 @@ class ListSmsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     bootstrapGridParameters(gutterSize: 10);
     final ScrollController _scrollController = ScrollController();
-    return GetBuilder<PokemonController>(
+    return GetBuilder<HomeController>(
       builder: (_) => _.loading
           ? CircularProgressIndicator()
           : _.itemsPokemon.length == 0

@@ -9,10 +9,10 @@ import 'package:sim_data/sim_model.dart';
 import '../data_source/api_clients.dart';
 import '../data_source/prefered_controller.dart';
 import 'package:uuid/uuid.dart';
-import 'package:uuid/uuid_util.dart';
 
 import '../models/phoneCompany.dart';
 import '../models/smsPush.dart';
+import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
 import 'string_app.dart';
 
@@ -115,6 +115,7 @@ class Utils {
 
   static sendBulkMessage() async {
     List<SmsPush> smsPushList = [];
+    HomeController _ = new HomeController();
     smsPushList = await Get.find<MainRepository>().getSmsList(false);
     for (var smsPush in smsPushList) {
       if ((await _supportCustomSim)!)
@@ -126,6 +127,7 @@ class Utils {
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
     }
     smsPushList = await Get.find<MainRepository>().getSmsList(false);
+    _.refresh();  
   }
 
   static sendMessage(int? id, String phoneNumber, String message,

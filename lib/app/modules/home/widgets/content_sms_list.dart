@@ -14,7 +14,7 @@ class ContentSmsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PokemonController>(
+    return GetBuilder<HomeController>(
         builder: (_) => Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

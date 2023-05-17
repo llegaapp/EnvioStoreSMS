@@ -8,7 +8,7 @@ import 'widgets/custom_appbar.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PokemonController>(
+    return GetBuilder<HomeController>(
       builder: (_) => WillPopScope(
           onWillPop: () async => false,
           child: Scaffold(
