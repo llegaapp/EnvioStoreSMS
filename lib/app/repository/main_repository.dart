@@ -18,8 +18,8 @@ class MainRepository {
     return LocalDB.updateSmsDB(send: send, id: id);
   }
 
-  Future<List<SmsPush>> getSmsList(bool bySend) async {
-    return LocalDB.getSmsList(bySend);
+  Future<List<SmsPush>> getSmsList({required String where}) async {
+    return LocalDB.getSmsList(where: where);
   }
 
   Future<void> dropSmsDB() async {

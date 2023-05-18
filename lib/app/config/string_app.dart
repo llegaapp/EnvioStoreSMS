@@ -25,3 +25,4 @@ String get buttonCancelaStr => 'Cancelar';
 String get aplicarCambiosStr => '¿Deseas aplicar cambios?';
 String get noEntregadoStr => 'No entregado';
 String get reenviarMensajeStr => 'Reenviar mensaje';
+String get enviandoMensajeStr => 'ENVIANDO';

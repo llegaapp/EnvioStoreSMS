@@ -17,6 +17,7 @@ import '../../models/phoneCompany.dart';
 import '../../models/pokemon.dart';
 import '../../models/smsPush.dart';
 import '../../repository/main_repository.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:dio/dio.dart';
 
@@ -76,7 +77,7 @@ class HomeController extends GetxController {
     if (wait) return;
     waits(true);
     itemsSms.clear();
-    itemsSms = await Get.find<MainRepository>().getSmsList(false);
+    itemsSms = await Get.find<MainRepository>().getSmsList(where: 'ALL');
     print('loadData');
     print(itemsSms.toString());
     itemsSmsAux = itemsSms;
@@ -127,6 +128,60 @@ class HomeController extends GetxController {
                               )
                             ],
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  sendSMSDialog(SmsPush smsPush) {
+    Get.dialog(
+        barrierDismissible: false,
+        Container(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            contentPadding:
+                EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, bottom: 10, top: 10),
+                    child: Column(
+                      children: [
+                        LoadingAnimationWidget.twistingDots(
+                          leftDotColor: themeApp.colorPrimaryBlue,
+                          rightDotColor: themeApp.colorPrimaryOrange,
+                          size: 40,
+                        ),
+                        SizedBox(height: 5,),
+                        Text(
+                          enviandoMensajeStr,
+                          style: themeApp.text20boldBlack,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          smsPush.name!,
+                          style: themeApp.text18boldBlack600,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          smsPush.phone!,
+                          style: themeApp.text12Black,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          smsPush.message!,
+                          style: themeApp.text14Black,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

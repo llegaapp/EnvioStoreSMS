@@ -29,8 +29,7 @@ class ContentSmsList extends StatelessWidget {
                     _.confirmDialog(
                         title: reenviarMensajeStr,
                         onPressed: () {
-
-                          Get.back();
+                          Utils.sendSingleMessage(item);
                         });
                   },
                 ),

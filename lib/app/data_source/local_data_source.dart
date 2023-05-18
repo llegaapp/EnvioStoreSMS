@@ -43,11 +43,14 @@ class LocalDB {
     await batch.commit(noResult: true);
   }
 
-  static Future<List<SmsPush>> getSmsList(bool bySend) async {
+  static Future<List<SmsPush>> getSmsList({required String where}) async {
     Database database = await _openDB();
-    String where = '';
-    if (bySend) where = 'WHERE send= 1';
-    String query = "SELECT * FROM SMS $where ORDER BY ID DESC ";
+    String _where = '';
+    if (where == 'SEND') _where = 'WHERE send= 1';
+    if (where == 'NOT_SEND') _where = 'WHERE send= 0';
+    if (where == 'ALL') _where = '';
+    String query = "SELECT * FROM SMS $_where ORDER BY ID DESC ";
+    print(query);
     final List<Map<String, dynamic>> itemsMap = await database.rawQuery(query);
     return List.generate(
         itemsMap.length,

@@ -14,10 +14,11 @@ import '../models/phoneCompany.dart';
 import '../models/smsPush.dart';
 import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
-import 'string_app.dart';
 
-class Utils  extends GetxController {
+class Utils extends GetxController {
   static var prefs = Get.put(PreferedController());
+  static int delayed = 1000;
+  static int delayedSecond = 500;
   static SimData? _simData;
   static Future<bool?> get _supportCustomSim async =>
       await BackgroundSms.isSupportCustomSim;
@@ -115,9 +116,12 @@ class Utils  extends GetxController {
 
   static sendBulkMessage() async {
     List<SmsPush> smsPushList = [];
+    smsPushList =
+        await Get.find<MainRepository>().getSmsList(where: "NOT_SEND");
 
-    smsPushList = await Get.find<MainRepository>().getSmsList(false);
     for (var smsPush in smsPushList) {
+      Get.find<HomeController>().sendSMSDialog(smsPush);
+      await Future.delayed(Duration(milliseconds: delayed));
       if ((await _supportCustomSim)!)
         await Utils.sendMessage(
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
@@ -125,8 +129,24 @@ class Utils  extends GetxController {
       else
         await Utils.sendMessage(
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
+      Get.back();
     }
-    smsPushList = await Get.find<MainRepository>().getSmsList(false);
+    Get.find<HomeController>().loadData();
+  }
+
+  static sendSingleMessage(SmsPush smsPush) async {
+    Get.back();
+    await Future.delayed(Duration(milliseconds: delayedSecond));
+    Get.find<HomeController>().sendSMSDialog(smsPush);
+    await Future.delayed(Duration(milliseconds: delayed));
+    if ((await _supportCustomSim)!)
+      await Utils.sendMessage(
+          smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
+          simSlot: Utils.prefs.currentSim! + 1);
+    else
+      await Utils.sendMessage(
+          smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
+    Get.back();
     Get.find<HomeController>().loadData();
   }
 

@@ -1,3 +1,4 @@
+import 'package:enviostoresms/app/modules/home/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:enviostoresms/app/modules/home/widgets/show_home.dart';
@@ -12,6 +13,7 @@ class HomePage extends StatelessWidget {
       builder: (_) => WillPopScope(
           onWillPop: () async => false,
           child: Scaffold(
+            drawer: SideBar(),
             appBar: CustomAppBar(),
             body: Container(child: _.loading ? LoadingInfo() : ShowHome()),
           )),

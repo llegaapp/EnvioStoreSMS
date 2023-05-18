@@ -81,7 +81,7 @@ class _ItemSmsState extends State<ItemSms> {
                               BootstrapRow(
                                 children: <BootstrapCol>[
                                   BootstrapCol(
-                                    sizes: 'col-9',
+                                    sizes: 'col-8',
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
@@ -92,7 +92,7 @@ class _ItemSmsState extends State<ItemSms> {
                                     ),
                                   ),
                                   BootstrapCol(
-                                    sizes: 'col-3',
+                                    sizes: 'col-4',
                                     child: Align(
                                       alignment: Alignment.topRight,
                                       child: Text(
