@@ -67,23 +67,7 @@ class _AppGestionState extends State<AppGestion> {
       debugShowCheckedModeBanner: false,
       theme: _theme,
       home: HomePage(),
-      initialBinding: PokemonBinding(),
-    );
-  }
-}
-
-class _AppGestion extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var _theme = ThemeData(
-      fontFamily: 'TitilliumWeb',
-    );
-    return GetMaterialApp(
-      title: titleAppStr,
-      debugShowCheckedModeBanner: false,
-      theme: _theme,
-      home: HomePage(),
-      initialBinding: PokemonBinding(),
+      initialBinding: HomeBinding(),
     );
   }
 }

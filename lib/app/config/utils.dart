@@ -16,7 +16,7 @@ import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
 import 'string_app.dart';
 
-class Utils {
+class Utils  extends GetxController {
   static var prefs = Get.put(PreferedController());
   static SimData? _simData;
   static Future<bool?> get _supportCustomSim async =>
@@ -115,7 +115,7 @@ class Utils {
 
   static sendBulkMessage() async {
     List<SmsPush> smsPushList = [];
-    HomeController _ = new HomeController();
+
     smsPushList = await Get.find<MainRepository>().getSmsList(false);
     for (var smsPush in smsPushList) {
       if ((await _supportCustomSim)!)
@@ -127,7 +127,7 @@ class Utils {
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
     }
     smsPushList = await Get.find<MainRepository>().getSmsList(false);
-    _.refresh();  
+    Get.find<HomeController>().loadData();
   }
 
   static sendMessage(int? id, String phoneNumber, String message,

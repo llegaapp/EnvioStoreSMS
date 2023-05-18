@@ -12,7 +12,6 @@ import '../models/pokemon.dart';
 import 'button1.dart';
 
 class ItemSms extends StatefulWidget {
-
   final int? index;
   final String? phone;
   final String? name;
@@ -79,10 +78,31 @@ class _ItemSmsState extends State<ItemSms> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.name!,
-                                style: themeApp.text18boldBlack600,
-                                overflow: TextOverflow.ellipsis,
+                              BootstrapRow(
+                                children: <BootstrapCol>[
+                                  BootstrapCol(
+                                    sizes: 'col-9',
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        widget.name!,
+                                        style: themeApp.text18boldBlack600,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  BootstrapCol(
+                                    sizes: 'col-3',
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        widget.phone!,
+                                        style: themeApp.text12Black,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(
                                 height: 3,

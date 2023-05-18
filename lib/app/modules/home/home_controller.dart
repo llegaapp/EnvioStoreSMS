@@ -81,7 +81,6 @@ class HomeController extends GetxController {
     print(itemsSms.toString());
     itemsSmsAux = itemsSms;
     waits(false);
-    Utils.uuidGenerator(true);
     refresh();
   }
 
@@ -223,6 +222,8 @@ class HomeController extends GetxController {
           title: borraHistorialMensajesStr,
           onPressed: () async {
             await Get.find<MainRepository>().dropSmsDB();
+
+            await loadData();
             Get.back();
             refresh();
           });
