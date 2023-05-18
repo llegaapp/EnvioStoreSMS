@@ -25,123 +25,6 @@ class ListSmsPage extends StatelessWidget {
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: BootstrapRow(
-                        children: <BootstrapCol>[
-                          BootstrapCol(
-                            sizes: 'col-4',
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                enviarConStr,
-                                style: themeApp.text14Black,
-                              ),
-                            ),
-                          ),
-                          BootstrapCol(
-                              sizes: 'col-7',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  Utils.prefs.currentSimName.toString(),
-                                  style: themeApp.text14Black,
-                                ),
-                              )),
-                          BootstrapCol(
-                              sizes: 'col-1',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: IconButton(
-                                  icon: const Icon(Icons.change_circle),
-                                  onPressed: () {
-                                    _.selectSimCard();
-                                  },
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: BootstrapRow(
-                        children: <BootstrapCol>[
-                          BootstrapCol(
-                            sizes: 'col-4',
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                claveSecretaStr,
-                                style: themeApp.text14Black,
-                              ),
-                            ),
-                          ),
-                          BootstrapCol(
-                              sizes: 'col-7',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  Utils.prefs.uuidDevice,
-                                  style: themeApp.text14Black,
-                                ),
-                              )),
-                          BootstrapCol(
-                              sizes: 'col-1',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: IconButton(
-                                  icon: const Icon(Icons.copy),
-                                  onPressed: () {
-                                    Clipboard.setData(ClipboardData(
-                                        text: Utils.prefs.uuidDevice));
-                                    Get.snackbar(
-                                        elementoCopiadoStr, claveSecretaStr);
-                                  },
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: BootstrapRow(
-                        children: <BootstrapCol>[
-                          BootstrapCol(
-                            sizes: 'col-4',
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                deviceIdStr,
-                                style: themeApp.text14Black,
-                              ),
-                            ),
-                          ),
-                          BootstrapCol(
-                              sizes: 'col-7',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  Utils.prefs.fireBaseToken,
-                                  style: themeApp.text14Black,
-                                ),
-                              )),
-                          BootstrapCol(
-                              sizes: 'col-1',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: IconButton(
-                                  icon: const Icon(Icons.copy),
-                                  onPressed: () {
-                                    Clipboard.setData(ClipboardData(
-                                        text: Utils.prefs.fireBaseToken));
-                                    Get.snackbar(
-                                        elementoCopiadoStr, deviceIdStr);
-                                  },
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
                     Expanded(
                         child: Scrollbar(
                       thickness: 8,
@@ -152,8 +35,7 @@ class ListSmsPage extends StatelessWidget {
                         controller: _scrollController,
                         itemCount: _.itemsSms.length,
                         itemBuilder: (context, index) {
-                          return ContentSmsList(
-                              _.itemsSms[index], index);
+                          return ContentSmsList(_.itemsSms[index], index);
                         },
                       ),
                     )),

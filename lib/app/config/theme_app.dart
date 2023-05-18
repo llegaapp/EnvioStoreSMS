@@ -6,9 +6,12 @@ class ThemeApp {
   Color colorGrey = Color.fromARGB(255, 209, 210, 205);
   Color colorWhite = Colors.white;
   Color colorBlack = Colors.black;
+  Color colorWhite2 = Color(0xFFfafafa);
   Color colorGray = Color(0xFF83899C);
   Color colorCompanion = Color(0xff7dc244);
   Color colorPrimaryRed = Color(0xffde002b);
+  Color colorGenericIcon = Color(0xffbcdcf2);
+
 
   Color colorPrimary = Color(0xffd9d9d9);
   Color colorPrimaryOrange = Color(0xfff76b20);
@@ -18,6 +21,8 @@ class ThemeApp {
   TextStyle? textButton;
 
   TextStyle? textHeader;
+  TextStyle? textHeaderH2;
+
   TextStyle? text12dWhite;
   TextStyle? text12dRed;
   TextStyle? text11dRed;
@@ -48,6 +53,10 @@ class ThemeApp {
         fontWeight: FontWeight.w700,
         fontSize: 20,
         fontFamily: 'TitilliumWeb Web');
+    textHeaderH2 = TextStyle(
+      fontWeight: FontWeight.w700,
+      fontSize: 20,
+    );
     text11dRed = TextStyle(
         color: colorPrimaryRed,
         fontSize: 11,

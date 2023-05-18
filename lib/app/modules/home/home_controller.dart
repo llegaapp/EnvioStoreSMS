@@ -2,11 +2,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:enviostoresms/main.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sim_data/sim_data.dart';
 import 'package:sim_data/sim_model.dart';
 import '../../config/constant.dart';
+import '../../config/responsive_app.dart';
 import '../../config/string_app.dart';
 import '../../config/utils.dart';
 import '../../data_source/constant_ds.dart';
@@ -27,6 +29,7 @@ class HomeController extends GetxController {
   Dio dio = Dio();
   late List<SmsPush> itemsSms = [];
   late List<SmsPush> itemsSmsAux = [];
+  final searchController = TextEditingController();
 
   late Map<String, dynamic> result;
   List<PokemonListModel> itemsPokemon = [];
@@ -161,7 +164,9 @@ class HomeController extends GetxController {
                           rightDotColor: themeApp.colorPrimaryOrange,
                           size: 40,
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Text(
                           enviandoMensajeStr,
                           style: themeApp.text20boldBlack,
@@ -191,6 +196,195 @@ class HomeController extends GetxController {
             ),
           ),
         ));
+  }
+
+  openBottomSheetSettings(BuildContext _) {
+    ResponsiveApp responsiveApp = ResponsiveApp(_);
+    bootstrapGridParameters(gutterSize: 10);
+    Get.bottomSheet(
+      StatefulBuilder(
+        builder: (context, setState) {
+          return Padding(
+            padding: responsiveApp.edgeInsetsApp!.onlyMediumLeftRightEdgeInsets,
+            child: Column(
+              children: [
+                Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              child:
+                                  Text(configStr, style: themeApp.textHeaderH2),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Expanded(
+                    child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      BootstrapRow(
+                        children: <BootstrapCol>[
+                          BootstrapCol(
+                            sizes: 'col-4',
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                enviarConStr,
+                                style: themeApp.text14Black,
+                              ),
+                            ),
+                          ),
+                          BootstrapCol(
+                              sizes: 'col-7',
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  Utils.prefs.currentSimName.toString(),
+                                  style: themeApp.text14Black,
+                                ),
+                              )),
+                          BootstrapCol(
+                              sizes: 'col-1',
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  icon: const Icon(Icons.change_circle),
+                                  onPressed: () {
+                                    selectSimCard();
+                                  },
+                                ),
+                              )),
+                        ],
+                      ),
+                      BootstrapRow(
+                        children: <BootstrapCol>[
+                          BootstrapCol(
+                            sizes: 'col-4',
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                claveSecretaStr,
+                                style: themeApp.text14Black,
+                              ),
+                            ),
+                          ),
+                          BootstrapCol(
+                              sizes: 'col-7',
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  Utils.prefs.uuidDevice,
+                                  style: themeApp.text14Black,
+                                ),
+                              )),
+                          BootstrapCol(
+                              sizes: 'col-1',
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  icon: const Icon(Icons.copy),
+                                  onPressed: () {
+                                    Clipboard.setData(ClipboardData(
+                                        text: Utils.prefs.uuidDevice));
+                                    Get.snackbar(
+                                        elementoCopiadoStr, claveSecretaStr);
+                                  },
+                                ),
+                              )),
+                        ],
+                      ),
+                      BootstrapRow(
+                        children: <BootstrapCol>[
+                          BootstrapCol(
+                            sizes: 'col-4',
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                deviceIdStr,
+                                style: themeApp.text14Black,
+                              ),
+                            ),
+                          ),
+                          BootstrapCol(
+                              sizes: 'col-7',
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  Utils.prefs.fireBaseToken,
+                                  style: themeApp.text14Black,
+                                ),
+                              )),
+                          BootstrapCol(
+                              sizes: 'col-1',
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  icon: const Icon(Icons.copy),
+                                  onPressed: () {
+                                    Clipboard.setData(ClipboardData(
+                                        text: Utils.prefs.fireBaseToken));
+                                    Get.snackbar(
+                                        elementoCopiadoStr, deviceIdStr);
+                                  },
+                                ),
+                              )),
+                        ],
+                      )
+                    ],
+                  ),
+                )),
+                Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: responsiveApp
+                            .edgeInsetsApp!.onlyLargeLeftRightEdgeInsets,
+                        child: Button2(
+                          title: cerrarStr,
+                          color: themeApp.colorPrimaryBlue,
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      enableDrag: false,
+      isDismissible: false,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(responsiveApp.buttonRadius),
+          topLeft: Radius.circular(responsiveApp.buttonRadius),
+        ),
+      ),
+    );
   }
 
   loadListPokemon() async {
@@ -277,7 +471,6 @@ class HomeController extends GetxController {
           title: borraHistorialMensajesStr,
           onPressed: () async {
             await Get.find<MainRepository>().dropSmsDB();
-
             await loadData();
             Get.back();
             refresh();

@@ -1,91 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SideBar extends StatelessWidget {
+import '../../../../main.dart';
+import '../../../config/string_app.dart';
+import '../../../config/utils.dart';
+import '../../../repository/main_repository.dart';
+import '../home_controller.dart';
+
+class SideBar extends StatelessWidget implements PreferredSizeWidget {
   @override
+  Size get preferredSize => Size.fromHeight(60.0);
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          DrawerHeader(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Center(
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 50.0,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    "Vakup",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 25),
-                  ),
-                ),
-              ],
+    return GetBuilder<HomeController>(
+      builder: (_) => Drawer(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 80,
             ),
-            decoration: BoxDecoration(
-              color: Colors.blueAccent,
+            Text(
+              appTitle,
+              textAlign: TextAlign.center,
+              style: themeApp.textHeader,
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.read_more),
-            title: Text('Leer datos'),
-            onTap: () {}
-
-          ),
-          ListTile(
-            leading: Icon(Icons.pets),
-            title: Text('Registrar animal'),
-            onTap: () {}
-
-          ),
-          ListTile(
-            leading: Icon(Icons.list_alt),
-            title: Text('Lista movimientos'),
-            onTap: () {
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.list),
-            title: Text('Lista animales'),
-            onTap: () {
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Grabar datos'),
-            onTap: () {
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.bluetooth),
-            title: Text('Conexion BT'),
-            onTap: () {
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.picture_as_pdf),
-            title: Text('Exportar Datos'),
-            onTap: () {
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.recent_actors_rounded),
-            title: Text('Acerca de'),
-            onTap: () {
-
-            },
-          ),
-        ],
+            SizedBox(
+              height: 20,
+            ),
+            ListTile(
+                leading: Icon(Icons.sim_card),
+                title: Text(
+                  seleccioneSimStr,
+                  style: themeApp.text14Black,
+                ),
+                onTap: () {
+                  Get.back();
+                  _.selectSimCard();
+                }),
+            ListTile(
+                leading: Icon(Icons.delete_forever),
+                title: Text(
+                  borraHistorialStr,
+                  style: themeApp.text14Black,
+                ),
+                onTap: () async {
+                  Get.back();
+                  _.confirmDialog(
+                      title: borraHistorialMensajesStr,
+                      onPressed: () async {
+                        await Get.find<MainRepository>().dropSmsDB();
+                        await _.loadData();
+                        Get.back();
+                      });
+                }),
+            ListTile(
+                leading: Icon(Icons.key_sharp),
+                title: Text(
+                  cambiarClaveStr,
+                  style: themeApp.text14Black,
+                ),
+                onTap: () async {
+                  Get.back();
+                  _.confirmDialog(
+                      title: cambiarClaveStr,
+                      onPressed: () async {
+                        Utils.uuidGenerator(true);
+                        Get.back();
+                        await Get.snackbar(claveSecretaStr, cambioClaveSecretaStr);
+                      });
+                }),
+            ListTile(
+                leading: Icon(Icons.settings),
+                title: Text(
+                  configStr,
+                  style: themeApp.text14Black,
+                ),
+                onTap: () {
+                  Get.back();
+                  _.openBottomSheetSettings(context);
+                }),
+          ],
+        ),
       ),
     );
   }
