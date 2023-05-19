@@ -27,7 +27,10 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
               height: 20,
             ),
             ListTile(
-                leading: Icon(Icons.sim_card),
+                leading: Icon(
+                  Icons.sim_card,
+                  color: themeApp.colorPrimaryOrange,
+                ),
                 title: Text(
                   seleccioneSimStr,
                   style: themeApp.text14Black,
@@ -37,7 +40,7 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
                   _.selectSimCard();
                 }),
             ListTile(
-                leading: Icon(Icons.delete_forever),
+                leading: Icon(Icons.delete_forever,color: themeApp.colorPrimaryOrange,),
                 title: Text(
                   borraHistorialStr,
                   style: themeApp.text14Black,
@@ -53,7 +56,7 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
                       });
                 }),
             ListTile(
-                leading: Icon(Icons.key_sharp),
+                leading: Icon(Icons.key_sharp,color: themeApp.colorPrimaryOrange,),
                 title: Text(
                   cambiarClaveStr,
                   style: themeApp.text14Black,
@@ -65,11 +68,12 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
                       onPressed: () async {
                         Utils.uuidGenerator(true);
                         Get.back();
-                        await Get.snackbar(claveSecretaStr, cambioClaveSecretaStr);
+                        await Get.snackbar(
+                            claveSecretaStr, cambioClaveSecretaStr);
                       });
                 }),
             ListTile(
-                leading: Icon(Icons.settings),
+                leading: Icon(Icons.settings,color: themeApp.colorPrimaryOrange,),
                 title: Text(
                   configStr,
                   style: themeApp.text14Black,

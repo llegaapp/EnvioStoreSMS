@@ -54,7 +54,7 @@ class _ItemSmsState extends State<ItemSms> {
           Text(widget.date!),
           Container(
             decoration: BoxDecoration(
-              color: themeApp.colorPrimary,
+              color: themeApp.colorWhite3,
               borderRadius: BorderRadius.all(
                   Radius.circular(responsiveApp.containerRadius)),
               boxShadow: [
@@ -86,7 +86,7 @@ class _ItemSmsState extends State<ItemSms> {
                                       alignment: Alignment.topLeft,
                                       child: Text(
                                         widget.name!,
-                                        style: themeApp.text18boldBlack600,
+                                        style: themeApp.text18boldBlue600,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -97,7 +97,7 @@ class _ItemSmsState extends State<ItemSms> {
                                       alignment: Alignment.topRight,
                                       child: Text(
                                         widget.phone!,
-                                        style: themeApp.text12Black,
+                                        style: themeApp.text12Orange,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),

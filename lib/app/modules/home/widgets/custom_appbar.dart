@@ -14,6 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return GetBuilder<HomeController>(
       builder: (_) => AppBar(
         backgroundColor: themeApp.colorWhite,
+        iconTheme: IconThemeData(color: themeApp.colorPrimaryBlue),
+
         elevation: 0,
         title: SearchTextField(
           controller: _.searchController,
