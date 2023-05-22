@@ -261,8 +261,12 @@ class HomeController extends GetxController {
                               child: Align(
                                 alignment: Alignment.center,
                                 child: IconButton(
-                                  icon: const Icon(Icons.change_circle),
+                                  icon: Icon(
+                                    Icons.change_circle,
+                                    color: themeApp.colorPrimaryOrange,
+                                  ),
                                   onPressed: () {
+                                    Get.back();
                                     selectSimCard();
                                   },
                                 ),
@@ -295,7 +299,10 @@ class HomeController extends GetxController {
                               child: Align(
                                 alignment: Alignment.center,
                                 child: IconButton(
-                                  icon: const Icon(Icons.copy),
+                                  icon: Icon(
+                                    Icons.copy,
+                                    color: themeApp.colorPrimaryOrange,
+                                  ),
                                   onPressed: () {
                                     Clipboard.setData(ClipboardData(
                                         text: Utils.prefs.uuidDevice));
@@ -332,7 +339,10 @@ class HomeController extends GetxController {
                               child: Align(
                                 alignment: Alignment.center,
                                 child: IconButton(
-                                  icon: const Icon(Icons.copy),
+                                  icon: Icon(
+                                    Icons.copy,
+                                    color: themeApp.colorPrimaryOrange,
+                                  ),
                                   onPressed: () {
                                     Clipboard.setData(ClipboardData(
                                         text: Utils.prefs.fireBaseToken));
@@ -357,6 +367,7 @@ class HomeController extends GetxController {
                             .edgeInsetsApp!.onlyLargeLeftRightEdgeInsets,
                         child: Button2(
                           title: cerrarStr,
+                          style: themeApp.text12dWhite,
                           color: themeApp.colorPrimaryBlue,
                           onPressed: () {
                             Get.back();
@@ -579,7 +590,7 @@ class HomeController extends GetxController {
                     height: 30,
                     label: cerrarStr,
                     style: themeApp.text12dWhite,
-                    background: themeApp.colorPrimaryOrange,
+                    background: themeApp.colorPrimaryBlue,
                     onPressed: () {
                       Get.back();
                     },
@@ -643,7 +654,7 @@ class HomeController extends GetxController {
                     child: Button2(
                       title: buttonConfirmStr,
                       style: themeApp.text12dWhite,
-                      color: themeApp.colorPrimaryOrange,
+                      color: themeApp.colorPrimaryBlue,
                       onPressed: onPressed,
                     ),
                   )),
