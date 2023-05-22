@@ -97,7 +97,7 @@ class _ItemSmsState extends State<ItemSms> {
                                       alignment: Alignment.topRight,
                                       child: Text(
                                         widget.phone!,
-                                        style: themeApp.text12Orange,
+                                        style: themeApp.text12Blue,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),

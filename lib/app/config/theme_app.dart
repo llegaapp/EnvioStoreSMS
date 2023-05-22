@@ -32,7 +32,7 @@ class ThemeApp {
   TextStyle? text16400Gray;
   TextStyle? text12Red;
   TextStyle? text12Black;
-  TextStyle? text12Orange;
+  TextStyle? text12Blue;
   TextStyle? text12RedBold;
   TextStyle? text16400Black;
   TextStyle? text18boldBlack600;
@@ -76,8 +76,8 @@ class ThemeApp {
         fontFamily: 'Titillium Web Black');
     text12Black = TextStyle(
         color: colorBlack, fontSize: 12, fontFamily: 'Titillium Web Black');
-    text12Orange = TextStyle(
-        color: colorPrimaryOrange, fontSize: 12, fontFamily: 'Titillium Web Black');
+    text12Blue = TextStyle(
+        color: colorPrimaryBlue, fontSize: 12, fontFamily: 'Titillium Web Black');
     text12RedBold = TextStyle(
       color: colorPrimaryOrange,
       fontSize: 12,
