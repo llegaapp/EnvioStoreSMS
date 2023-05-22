@@ -2,7 +2,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
-import '../../../global_widgets/loading_info.dart';
+import '../../../global_widgets/no_sms.dart';
 import '../home_controller.dart';
 import 'content_sms_list.dart';
 
@@ -14,8 +14,8 @@ class ListSmsPage extends StatelessWidget {
     return GetBuilder<HomeController>(
       builder: (_) => _.loading
           ? CircularProgressIndicator()
-          : _.itemsPokemon.length == 0
-              ? LoadingInfo()
+          : _.itemsSms.length == 0
+              ? NoSms()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

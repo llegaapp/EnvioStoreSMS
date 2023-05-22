@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../config/utils.dart';
 import '../data_source/api_clients.dart';
+import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
 
 class Listeners {
@@ -26,24 +27,29 @@ class Listeners {
     print(messageFb);
     print(Utils.prefs.currentSimName!);
     print(Utils.prefs.currentSim! + 1);
-    if (await _isPermissionGranted()) {
-      for (var i = 0; i < toList.length; i++) {
-        SmsPush smsPush = new SmsPush();
-        final to = toList[i].toString().split('-');
-        String phone = to[0].trim().toString();
-        String name = to[1].trim().toString();
-        DateTime datetime = DateTime.now();
-        String date = datetime.toString();
 
-        smsPush.phone = phone;
-        smsPush.name = name;
-        smsPush.message = message;
-        smsPush.date = date;
-        smsPush.send = 0;
-        await Get.find<MainRepository>().insertSmsDB(smsPush);
-      }
+    for (var i = 0; i < toList.length; i++) {
+      SmsPush smsPush = new SmsPush();
+      final to = toList[i].toString().split('-');
+      String phone = to[0].trim().toString();
+      String name = to[1].trim().toString();
+      DateTime datetime = DateTime.now();
+      String date = datetime.toString();
+
+      smsPush.phone = phone;
+      smsPush.name = name;
+      smsPush.message = message;
+      smsPush.date = date;
+      smsPush.send = 0;
+      await Get.find<MainRepository>().insertSmsDB(smsPush);
+    }
+
+    if (await _isPermissionGranted()) {
       Utils.sendBulkMessage();
-    } else
+    } else {
+      Get.find<HomeController>().loadData();
       await Utils.solicitarEnvioSMS();
+
+    }
   }
 }

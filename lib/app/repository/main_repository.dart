@@ -29,13 +29,4 @@ class MainRepository {
   Future<void> dropSmsDB() async {
     return LocalDB.dropSmsDB();
   }
-
-  Future<Map<String, dynamic>> getAppHomePokemonList(
-      int skip, int limit) async {
-    return _api.getAppHomePokemonList(skip, limit);
-  }
-
-  Future<Map<String, dynamic>> getAppHomePokemonDetailList(String url) async {
-    return _api.getAppHomePokemonDetailList(url);
-  }
 }

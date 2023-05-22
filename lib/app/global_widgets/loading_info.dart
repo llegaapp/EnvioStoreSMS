@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../config/constant.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../main.dart';
+import '../config/string_app.dart';
 
 class LoadingInfo extends StatelessWidget {
   @override
@@ -9,11 +11,17 @@ class LoadingInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                Constant.LOGO_ALONE,
-                width: 250,
-              )),
+            alignment: Alignment.center,
+            child: LoadingAnimationWidget.discreteCircle(
+              color: themeApp.colorPrimaryBlue,
+              secondRingColor: themeApp.colorPrimaryOrange,
+              size: 100,
+            ),
+          ),SizedBox(height: 20,),
+          Align(
+            alignment: Alignment.center,
+            child: Text(cargandoInfoStr),
+          ),
         ],
       ),
     );

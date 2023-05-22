@@ -5,7 +5,6 @@ import 'package:enviostoresms/main.dart';
 import 'package:flutter/material.dart';
 
 import '../config/string_app.dart';
-import '../models/pokemon.dart';
 
 class ItemSms extends StatefulWidget {
   final int? index;
@@ -15,7 +14,6 @@ class ItemSms extends StatefulWidget {
   final String? date;
   final VoidCallback? onPressed;
   final int? send;
-  final List<PokemonTypesList>? pokemonTypes;
 
   ItemSms({
     this.index,
@@ -25,7 +23,6 @@ class ItemSms extends StatefulWidget {
     this.message,
     this.date,
     this.send,
-    this.pokemonTypes,
   });
 
   @override

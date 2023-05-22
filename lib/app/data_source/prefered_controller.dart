@@ -2,7 +2,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 
 import '../models/phoneCompany.dart';
-import '../models/pokemon.dart';
 
 class PreferedController extends GetxController {
   final prefs = GetStorage();
@@ -10,11 +9,6 @@ class PreferedController extends GetxController {
   void erasePrefered() {
     prefs.erase();
   }
-
-  List<PokemonListModel> get itemsPokemonSelected =>
-      prefs.read('itemsPokemonSelected') ?? [];
-  set itemsPokemonSelected(List<PokemonListModel> val) =>
-      prefs.write('itemsPokemonSelected', val);
 
   String get fireBaseToken => prefs.read('fireBaseToken') ?? '';
   set fireBaseToken(String val) => prefs.write('fireBaseToken', val);

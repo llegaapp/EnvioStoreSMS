@@ -57,7 +57,7 @@ dependencies:
   intl: ^0.17.0
 
 flutter_native_splash:
-  color: "#1663b2"
+  color: "#fafafa"
   image: assets/img/logo_splash_1152.png
   android: true
   ios: true
@@ -65,7 +65,7 @@ flutter_native_splash:
 
   android_12:
     image: assets/img/logo_splash_1152.png
-    color: "#1663b2"
+    color: "#fafafa"
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0

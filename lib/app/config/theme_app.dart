@@ -20,9 +20,12 @@ class ThemeApp {
   Color colorGenericBox = Color(0xffe4f4ff);
 
   TextStyle? textButton;
+  TextStyle? textParagraph;
 
   TextStyle? textHeader;
   TextStyle? textHeaderH2;
+  TextStyle? textHeaderH1;
+
 
   TextStyle? text12dWhite;
   TextStyle? text12dRed;
@@ -53,6 +56,10 @@ class ThemeApp {
       fontWeight: FontWeight.w600,
       fontSize: 16,
     );
+    textParagraph = TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+    );
     textHeader = TextStyle(
         color: colorPrimaryBlue,
         fontWeight: FontWeight.w700,
@@ -61,6 +68,11 @@ class ThemeApp {
     textHeaderH2 = TextStyle(
       fontWeight: FontWeight.w700,
       fontSize: 20,
+    );
+    textHeaderH1 = TextStyle(
+      color: Color(0xFF004C97),
+      fontWeight: FontWeight.w700,
+      fontSize: 24,
     );
     text11dRed = TextStyle(
         color: colorPrimaryRed,
