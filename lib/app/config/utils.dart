@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:background_sms/background_sms.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,8 @@ import '../models/phoneCompany.dart';
 import '../models/smsPush.dart';
 import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
+import 'constant.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class Utils extends GetxController {
   static var prefs = Get.put(PreferedController());
@@ -116,8 +119,8 @@ class Utils extends GetxController {
 
   static sendBulkMessage() async {
     List<SmsPush> smsPushList = [];
-    smsPushList =
-        await Get.find<MainRepository>().getSmsList(where: "NOT_SEND");
+    smsPushList = await Get.find<MainRepository>()
+        .getSmsList(where: Constant.SMS_STATUS_NOT_SEND);
 
     for (var smsPush in smsPushList) {
       Get.find<HomeController>().sendSMSDialog(smsPush);
@@ -215,5 +218,13 @@ class Utils extends GetxController {
 
   static String getNameDB() {
     return 'envioStore_sms.db';
+  }
+
+  static String dateFormat(String date) {
+    initializeDateFormatting();
+    var parsedDate = DateTime.parse(date!);
+    String formattedDate =
+        DateFormat('d MMM h:mm a', 'es_MX').format(parsedDate);
+    return formattedDate;
   }
 }

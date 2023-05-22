@@ -53,6 +53,8 @@ dependencies:
   sim_data: ^0.0.2
   uuid: ^3.0.7
   loading_animation_widget: ^1.2.0+4
+  quds_popup_menu: ^0.0.1+1
+  intl: ^0.17.0
 
 flutter_native_splash:
   color: "#1663b2"

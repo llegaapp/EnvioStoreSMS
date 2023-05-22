@@ -29,3 +29,6 @@ String get enviandoMensajeStr => 'ENVIANDO';
 String get buscarStr => 'Buscar';
 String get configStr => 'Configuración';
 String get cambioClaveSecretaStr => 'Se cambió la clave secreta';
+String get todosStr => 'Todos';
+String get enviadosStr => 'Enviados';
+String get sinEnviarStr => 'Sin enviar';

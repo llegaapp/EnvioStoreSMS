@@ -1,15 +1,11 @@
-import 'package:enviostoresms/app/config/constant.dart';
 import 'package:enviostoresms/app/config/responsive_app.dart';
+import 'package:enviostoresms/app/config/utils.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
-import 'package:enviostoresms/app/config/theme_app.dart';
 import 'package:enviostoresms/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../config/string_app.dart';
-import '../config/utils.dart';
 import '../models/pokemon.dart';
-import 'button1.dart';
 
 class ItemSms extends StatefulWidget {
   final int? index;
@@ -42,7 +38,6 @@ class _ItemSmsState extends State<ItemSms> {
     ResponsiveApp responsiveApp = ResponsiveApp(context);
     bootstrapGridParameters(gutterSize: 0);
     const double kDefaultPadding = 20.0;
-
     return Padding(
       padding: const EdgeInsets.only(
         left: kDefaultPadding,
@@ -51,7 +46,7 @@ class _ItemSmsState extends State<ItemSms> {
       ),
       child: Column(
         children: [
-          Text(widget.date!),
+          Text(Utils.dateFormat(widget.date!)),
           Container(
             decoration: BoxDecoration(
               color: themeApp.colorWhite3,
@@ -137,7 +132,7 @@ class _ItemSmsState extends State<ItemSms> {
                                       constraints: BoxConstraints(),
                                       icon: Icon(
                                         Icons.info_rounded,
-                                        size: 15,
+                                        size: 20,
                                         color: themeApp.colorPrimaryRed,
                                       ),
                                       onPressed: widget.onPressed,
@@ -167,15 +162,10 @@ class _ItemSmsState extends State<ItemSms> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Icon(
-                                      Icons.check,
-                                      size: 15,
+                                      Icons.done_all,
+                                      size: 20,
                                       color: themeApp.colorCompanion,
-                                    ),
-                                    Icon(
-                                      Icons.check,
-                                      size: 15,
-                                      color: themeApp.colorCompanion,
-                                    ),
+                                    )
                                   ],
                                 ),
                               ],

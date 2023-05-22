@@ -14,6 +14,7 @@ import '../../config/utils.dart';
 import '../../data_source/constant_ds.dart';
 import '../../global_widgets/button1.dart';
 import '../../global_widgets/button2.dart';
+import '../../global_widgets/custom_menu_float/screens/quds_popup_menu.dart';
 import '../../models/paginator.dart';
 import '../../models/phoneCompany.dart';
 import '../../models/pokemon.dart';
@@ -80,7 +81,18 @@ class HomeController extends GetxController {
     if (wait) return;
     waits(true);
     itemsSms.clear();
-    itemsSms = await Get.find<MainRepository>().getSmsList(where: 'ALL');
+    itemsSms = await Get.find<MainRepository>()
+        .getSmsList(where: Constant.SMS_STATUS_ALL);
+    print('ID_STATUS_ALL');
+    print(
+        Get.find<MainRepository>().getSmsCount(where: Constant.SMS_STATUS_ALL));
+    Utils.prefs.count_sms_all = await Get.find<MainRepository>()
+        .getSmsCount(where: Constant.SMS_STATUS_ALL);
+    Utils.prefs.count_sms_send = await Get.find<MainRepository>()
+        .getSmsCount(where: Constant.SMS_STATUS_SEND);
+    Utils.prefs.count_sms_not_send = await Get.find<MainRepository>()
+        .getSmsCount(where: Constant.SMS_STATUS_NOT_SEND);
+
     print('loadData');
     print(itemsSms.toString());
     itemsSmsAux = itemsSms;
@@ -467,33 +479,6 @@ class HomeController extends GetxController {
     update();
   }
 
-  onActionSelected(String value) {
-    if (value == '1') {
-      confirmDialog(
-          title: cambiarClaveStr,
-          onPressed: () {
-            Utils.uuidGenerator(true);
-            update();
-            Get.back();
-          });
-    }
-    if (value == '2') {
-      confirmDialog(
-          title: borraHistorialMensajesStr,
-          onPressed: () async {
-            await Get.find<MainRepository>().dropSmsDB();
-            await loadData();
-            Get.back();
-            refresh();
-          });
-    }
-    if (value == '3') {
-      selectSimCard();
-    }
-
-    update();
-  }
-
   selectSimCard() async {
     List<PhoneCompany> cards = Utils.prefs.itemsPhoneCompany;
     bool isGranted = false;
@@ -663,5 +648,124 @@ class HomeController extends GetxController {
         ],
       ),
     ));
+  }
+
+  void filteritemsSMS() async {
+    if (wait) return;
+    waits(true);
+    String valueFilter = searchController.text.trim();
+    itemsSms = itemsSmsAux;
+    update();
+
+    List<SmsPush> result = itemsSms.where((item) {
+      return ((item.name!
+              .trim()
+              .toLowerCase()
+              .contains(valueFilter.trim().toLowerCase()) ||
+          item.phone!
+              .trim()
+              .toLowerCase()
+              .contains(valueFilter.trim().toLowerCase()) ||
+          item.message!
+              .trim()
+              .toLowerCase()
+              .contains(valueFilter.trim().toLowerCase())));
+    }).toList();
+    itemsSms = result;
+    waits(false);
+    update();
+    return;
+  }
+
+  List<QudsPopupMenuBase> getMenuItems() {
+    return [
+      itemSuperviorPopUp(
+          Icons.format_list_bulleted,
+          themeApp.colorPrimaryBlue,
+          todosStr,
+          Utils.prefs.count_sms_all,
+          Constant.SMS_STATUS_ALL,
+          Constant.SMS_STATUS_ALL_ID),
+      itemSuperviorPopUp(
+          Icons.done_all,
+          themeApp.colorCompanion,
+          enviadosStr,
+          Utils.prefs.count_sms_send,
+          Constant.SMS_STATUS_SEND,
+          Constant.SMS_STATUS_SEND_ID),
+      itemSuperviorPopUp(
+          Icons.info_rounded,
+          themeApp.colorPrimaryRed,
+          sinEnviarStr,
+          Utils.prefs.count_sms_not_send,
+          Constant.SMS_STATUS_NOT_SEND,
+          Constant.SMS_STATUS_NOT_SEND_ID),
+    ];
+  }
+
+  itemSuperviorPopUp(IconData? txtIcon, Color color, txtTitle, int? txtCount,
+      String filtredBy, int value) {
+    return QudsPopupMenuWidget(
+        builder: (c) => InkWell(
+              onTap: () {
+                setFilterStatus(filtredBy.toString(), value);
+                Utils.prefs.smsFiltredBy = filtredBy;
+                Get.back();
+                update();
+              },
+              child: Container(
+                height: 50,
+                color: Utils.prefs.smsFiltredBy == filtredBy
+                    ? themeApp.colorGenericBox
+                    : Colors.white,
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: Icon(
+                        txtIcon,
+                        size: 20,
+                        color: color,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: Text(
+                        txtTitle,
+                        overflow: TextOverflow.ellipsis,
+                        style: Utils.prefs.smsFiltredBy == filtredBy
+                            ? themeApp.text16600PrimaryBlue
+                            : themeApp.text16boldBlack,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 5.0),
+                      child: Text(
+                        txtCount.toString(),
+                        style: themeApp.text16boldBlack,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ));
+  }
+
+  setFilterStatus(String fitredBy, int value) {
+    print('setFilterStatus $fitredBy');
+    for (var i = 0; i < itemsSms.length; i++) {
+      itemsSms[i].visible = true;
+    }
+    if (Constant.SMS_STATUS_ALL != fitredBy) {
+      for (var i = 0; i < itemsSms.length; i++) {
+        if (itemsSms[i].send != value) itemsSms[i].visible = false;
+      }
+    }
+    log(itemsSms.toString());
+    update();
   }
 }

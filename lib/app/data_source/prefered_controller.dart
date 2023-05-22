@@ -30,4 +30,16 @@ class PreferedController extends GetxController {
       prefs.read('itemsPhoneCompany') ?? [];
   set itemsPhoneCompany(List<PhoneCompany> val) =>
       prefs.write('itemsPhoneCompany', val);
+
+  String get smsFiltredBy => prefs.read('smsFiltredBy') ?? '';
+  set smsFiltredBy(String val) => prefs.write('smsFiltredBy', val);
+
+  int? get count_sms_all => prefs.read('count_sms_all') ?? 0;
+  set count_sms_all(int? val) => prefs.write('count_sms_all', val);
+
+  int? get count_sms_send => prefs.read('count_sms_send') ?? 0;
+  set count_sms_send(int? val) => prefs.write('count_sms_send', val);
+
+  int? get count_sms_not_send => prefs.read('count_sms_not_send') ?? 0;
+  set count_sms_not_send(int? val) => prefs.write('count_sms_not_send', val);
 }

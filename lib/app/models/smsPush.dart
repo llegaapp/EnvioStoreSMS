@@ -5,6 +5,7 @@ class SmsPush {
   String? message;
   String? date;
   int? send = 0;
+  bool visible = true;
 
   SmsPush({this.id, this.phone, this.name, this.message, this.date, this.send});
 
@@ -37,6 +38,7 @@ class SmsPush {
         'message: $message,\n  ' +
         'date: $date,\n  ' +
         'sent: $send,\n  ' +
+        'visible: $visible,\n  ' +
         ',)\n )\n';
   }
 }

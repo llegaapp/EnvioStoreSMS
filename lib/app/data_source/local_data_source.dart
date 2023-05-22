@@ -2,6 +2,7 @@ import 'package:enviostoresms/app/models/smsPush.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../config/constant.dart';
 import '../config/utils.dart';
 
 class LocalDB {
@@ -43,12 +44,23 @@ class LocalDB {
     await batch.commit(noResult: true);
   }
 
+  static Future<int?> getSmsCount({required String where}) async {
+    Database database = await _openDB();
+    String _where = '';
+    if (where == Constant.SMS_STATUS_SEND) _where = 'WHERE send= 1';
+    if (where == Constant.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
+    if (where == Constant.SMS_STATUS_ALL) _where = '';
+    var result = Sqflite.firstIntValue(await database
+        .rawQuery("SELECT count(*) as num FROM SMS $_where ORDER BY ID DESC "));
+    return result;
+  }
+
   static Future<List<SmsPush>> getSmsList({required String where}) async {
     Database database = await _openDB();
     String _where = '';
-    if (where == 'SEND') _where = 'WHERE send= 1';
-    if (where == 'NOT_SEND') _where = 'WHERE send= 0';
-    if (where == 'ALL') _where = '';
+    if (where == Constant.SMS_STATUS_SEND) _where = 'WHERE send= 1';
+    if (where == Constant.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
+    if (where == Constant.SMS_STATUS_ALL) _where = '';
     String query = "SELECT * FROM SMS $_where ORDER BY ID DESC ";
     print(query);
     final List<Map<String, dynamic>> itemsMap = await database.rawQuery(query);

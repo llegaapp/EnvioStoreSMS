@@ -1,16 +1,10 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:enviostoresms/main.dart';
-import '../../../config/constant.dart';
-import '../../../config/string_app.dart';
-import '../../../config/utils.dart';
 import '../../../global_widgets/loading_info.dart';
 import '../home_controller.dart';
 import 'content_sms_list.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class ListSmsPage extends StatelessWidget {
   @override
@@ -35,7 +29,9 @@ class ListSmsPage extends StatelessWidget {
                         controller: _scrollController,
                         itemCount: _.itemsSms.length,
                         itemBuilder: (context, index) {
-                          return ContentSmsList(_.itemsSms[index], index);
+                          return (_.itemsSms[index].visible)
+                              ? ContentSmsList(_.itemsSms[index], index)
+                              : Container();
                         },
                       ),
                     )),
