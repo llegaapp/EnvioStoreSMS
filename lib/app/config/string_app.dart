@@ -14,7 +14,6 @@ String get titleAppStr => 'EnvíoStore SMS';
 String get obteniendoDatosStr => 'Obteniendo datos';
 String get permisosAppStr => 'Permisos de la app';
 String get borraHistorialStr => 'Borrar el historial';
-String get borraHistorialMensajesStr => 'Borrar el historial de mensajes';
 String get seleccioneSimStr => 'Seleccione sim de envío';
 String get noHaySimCarsStr => 'No se econtraron Sim';
 String get fallaCargaStr => 'Failed to load data';

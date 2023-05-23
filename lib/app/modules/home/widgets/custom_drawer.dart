@@ -49,7 +49,7 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () async {
                   Get.back();
                   _.confirmDialog(
-                      title: borraHistorialMensajesStr,
+                      title: borraHistorialStr,
                       onPressed: () async {
                         await Get.find<MainRepository>().dropSmsDB();
                         await _.loadData();

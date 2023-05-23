@@ -67,6 +67,9 @@ flutter_native_splash:
   android_12:
     image: assets/img/logo_splash_1152.png
     color: "#fafafa"
+  android_13:
+    image: assets/img/logo_splash_1152.png
+    color: "#fafafa"
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
