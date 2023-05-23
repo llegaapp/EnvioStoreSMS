@@ -15,6 +15,7 @@ import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
 import 'constant.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'dart:io' show Platform;
 
 class Utils extends GetxController {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -91,12 +92,23 @@ class Utils extends GetxController {
     int send = 0;
     List<String> recipients = [];
     recipients.add(phoneNumber);
-    var result = await FlutterSmsDual().sendSMS(
+    var result;
+    if (Platform.isAndroid) {
+      result = await FlutterSmsDual().sendSMS(
+          message: message,
+          recipients: recipients,
+          sendDirect: true,
+          sendFromDefaultSIM: false,
+          sim: simSlot.toString());
+    }
+    if (Platform.isIOS) {
+      result = await FlutterSmsDual().sendSMS(
         message: message,
         recipients: recipients,
         sendDirect: true,
-        sendFromDefaultSIM: false,
-        sim: simSlot.toString());
+        sendFromDefaultSIM: true,
+      );
+    }
 
     if (result == Constant.SMS_SEND) {
       send = 1;
@@ -111,34 +123,40 @@ class Utils extends GetxController {
 
   static Future<bool> areSimCards() async {
     bool _areSimCards = false;
-    List<PhoneCompany> itemsPhoneCompany = [];
+    if ((Platform.isAndroid)) {
+      List<PhoneCompany> itemsPhoneCompany = [];
 
-    SimData simData;
-    try {
-      await Utils.solicitarStatusPhone();
-      simData = await SimDataPlugin.getSimData();
-      _simData = simData;
-    } catch (e) {
-      _simData = null;
-    }
-    var cards = _simData?.cards.reversed.toList();
-
-    int? totalCards = cards?.length;
-    if (totalCards! > 0) {
-      _areSimCards = true;
-
-      if (Utils.prefs.currentSim == 0) {
-        Utils.prefs.currentSim = cards?.first.slotIndex;
-        Utils.prefs.currentSimName = cards?.first.carrierName;
-
-        for (var _item in cards!) {
-          PhoneCompany itemsCompany = new PhoneCompany();
-          itemsCompany.slotIndex = _item.slotIndex;
-          itemsCompany.companyName = _item.carrierName;
-          itemsPhoneCompany.add(itemsCompany);
-        }
-        Utils.prefs.itemsPhoneCompany = itemsPhoneCompany;
+      SimData simData;
+      try {
+        await Utils.solicitarStatusPhone();
+        simData = await SimDataPlugin.getSimData();
+        _simData = simData;
+      } catch (e) {
+        _simData = null;
       }
+      var cards = _simData?.cards.reversed.toList();
+
+      int? totalCards = cards?.length;
+      if (totalCards! > 0) {
+        _areSimCards = true;
+
+        if (Utils.prefs.currentSim == 0) {
+          Utils.prefs.currentSim = cards?.first.slotIndex;
+          Utils.prefs.currentSimName = cards?.first.carrierName;
+
+          for (var _item in cards!) {
+            PhoneCompany itemsCompany = new PhoneCompany();
+            itemsCompany.slotIndex = _item.slotIndex;
+            itemsCompany.companyName = _item.carrierName;
+            itemsPhoneCompany.add(itemsCompany);
+          }
+          Utils.prefs.itemsPhoneCompany = itemsPhoneCompany;
+        }
+      }
+    }
+    if (Platform.isIOS) {
+      _areSimCards = true;
+      Utils.prefs.currentSimName = '1';
     }
 
     log(Utils.prefs.currentSimName.toString());
