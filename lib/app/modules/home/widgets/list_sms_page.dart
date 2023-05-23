@@ -29,9 +29,7 @@ class ListSmsPage extends StatelessWidget {
                         controller: _scrollController,
                         itemCount: _.itemsSms.length,
                         itemBuilder: (context, index) {
-                          return (_.itemsSms[index].visible)
-                              ? ContentSmsList(_.itemsSms[index], index)
-                              : Container();
+                          return ContentSmsList(_.itemsSms[index], index);
                         },
                       ),
                     )),

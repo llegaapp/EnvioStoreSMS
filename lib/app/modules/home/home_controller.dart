@@ -31,7 +31,6 @@ class HomeController extends GetxController {
   final searchController = TextEditingController();
 
   late Map<String, dynamic> result;
-  SimData? _simData;
 
   @override
   void onInit() async {
@@ -138,8 +137,8 @@ class HomeController extends GetxController {
                         children: [
                           Expanded(
                             child: Container(
-                              child:
-                                  Text(configStr, style: themeApp.textHeaderH2),
+                              child: Text(deviceIdStr,
+                                  style: themeApp.textHeaderH2),
                             ),
                           ),
                         ],
@@ -158,95 +157,7 @@ class HomeController extends GetxController {
                       BootstrapRow(
                         children: <BootstrapCol>[
                           BootstrapCol(
-                            sizes: 'col-4',
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                enviarConStr,
-                                style: themeApp.text14Black,
-                              ),
-                            ),
-                          ),
-                          BootstrapCol(
-                              sizes: 'col-7',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  Utils.prefs.currentSimName.toString(),
-                                  style: themeApp.text14Black,
-                                ),
-                              )),
-                          BootstrapCol(
-                              sizes: 'col-1',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.change_circle,
-                                    color: themeApp.colorPrimaryOrange,
-                                  ),
-                                  onPressed: () {
-                                    Get.back();
-                                    selectSimCard();
-                                  },
-                                ),
-                              )),
-                        ],
-                      ),
-                      BootstrapRow(
-                        children: <BootstrapCol>[
-                          BootstrapCol(
-                            sizes: 'col-4',
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                claveSecretaStr,
-                                style: themeApp.text14Black,
-                              ),
-                            ),
-                          ),
-                          BootstrapCol(
-                              sizes: 'col-7',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  Utils.prefs.uuidDevice,
-                                  style: themeApp.text14Black,
-                                ),
-                              )),
-                          BootstrapCol(
-                              sizes: 'col-1',
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.copy,
-                                    color: themeApp.colorPrimaryOrange,
-                                  ),
-                                  onPressed: () {
-                                    Clipboard.setData(ClipboardData(
-                                        text: Utils.prefs.uuidDevice));
-                                    Get.snackbar(
-                                        elementoCopiadoStr, claveSecretaStr);
-                                  },
-                                ),
-                              )),
-                        ],
-                      ),
-                      BootstrapRow(
-                        children: <BootstrapCol>[
-                          BootstrapCol(
-                            sizes: 'col-4',
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                deviceIdStr,
-                                style: themeApp.text14Black,
-                              ),
-                            ),
-                          ),
-                          BootstrapCol(
-                              sizes: 'col-7',
+                              sizes: 'col-11',
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
@@ -328,8 +239,6 @@ class HomeController extends GetxController {
       loading = false;
       update();
     } catch (e) {
-      debugPrint(e.toString());
-      _simData = null;
       update();
     }
     if (isGranted && loading == false)
@@ -367,7 +276,7 @@ class HomeController extends GetxController {
                                                     cards[index]
                                                         .slotIndex
                                                         .toString()
-                                                ? themeApp.colorGrey
+                                                ? themeApp.colorGenericBox
                                                 : null,
                                         leading: Icon(
                                           Icons.sim_card,
@@ -376,13 +285,18 @@ class HomeController extends GetxController {
                                                   cards[index]
                                                       .slotIndex
                                                       .toString()
-                                              ? themeApp.colorWhite
+                                              ? themeApp.colorPrimaryBlue
                                               : null,
                                         ),
                                         title: Text(
-                                          'Sim ${cards[index].slotIndex}',
-                                          style: themeApp.text14Black,
-                                        ),
+                                            'Sim ${cards[index].slotIndex}',
+                                            style: Utils.prefs.currentSim
+                                                        .toString() ==
+                                                    cards[index]
+                                                        .slotIndex
+                                                        .toString()
+                                                ? themeApp.text16600PrimaryBlue
+                                                : themeApp.text16boldBlack),
                                         subtitle: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -516,6 +430,22 @@ class HomeController extends GetxController {
     return;
   }
 
+  setFilterStatus(String fitredBy, int value) {
+    if (wait) return;
+    String valueFilter = value.toString();
+    itemsSms = itemsSmsAux;
+    update();
+    if (Constant.SMS_STATUS_ALL != fitredBy) {
+      List<SmsPush> result = itemsSms.where((item) {
+        return ((item.send!.toString().contains(valueFilter)));
+      }).toList();
+      itemsSms = result;
+    }
+    waits(false);
+    update();
+    return;
+  }
+
   List<QudsPopupMenuBase> getMenuItems() {
     return [
       itemSuperviorPopUp(
@@ -592,19 +522,5 @@ class HomeController extends GetxController {
                 ),
               ),
             ));
-  }
-
-  setFilterStatus(String fitredBy, int value) {
-    print('setFilterStatus $fitredBy');
-    for (var i = 0; i < itemsSms.length; i++) {
-      itemsSms[i].visible = true;
-    }
-    if (Constant.SMS_STATUS_ALL != fitredBy) {
-      for (var i = 0; i < itemsSms.length; i++) {
-        if (itemsSms[i].send != value) itemsSms[i].visible = false;
-      }
-    }
-    log(itemsSms.toString());
-    update();
   }
 }

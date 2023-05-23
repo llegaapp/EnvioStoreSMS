@@ -63,7 +63,6 @@ class _QudsPopupButtonState extends State<QudsPopupButton> {
         onTap: () {
           setState(() {
             tapped = true;
-            print(tapped);
           });
           showQudsPopupMenu(
             backgroundColor: widget.backgroundColor,
@@ -76,7 +75,6 @@ class _QudsPopupButtonState extends State<QudsPopupButton> {
         onTapCancel: () {
           setState(() {
             tapped = false;
-            print(tapped);
           });
         },
         focusNode: widget.focusNode,

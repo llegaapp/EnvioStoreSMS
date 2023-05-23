@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'app/config/constant.dart';
 import 'app/config/string_app.dart';
 import 'app/config/theme_app.dart';
 import 'app/config/utils.dart';
@@ -42,11 +43,7 @@ class _AppGestionState extends State<AppGestion> {
     super.initState();
     Utils.solicitarEnvioSMS();
     Utils.areSimCards();
-
-    Utils.uuidGenerator(false);
-    print('Utils.prefs.uuidDevice');
-    print(Utils.prefs.uuidDevice);
-
+    Utils.prefs.smsFiltredBy = Constant.SMS_STATUS_ALL;
     PushNotificationService.messageStream
         .listen((message) async => Listeners.listenPush(message));
     setState(() {});
@@ -55,8 +52,6 @@ class _AppGestionState extends State<AppGestion> {
 
   @override
   Widget build(BuildContext context) {
-    print('Utils.prefs.fireBaseToken');
-    print(Utils.prefs.fireBaseToken);
     var _theme = ThemeData(
       fontFamily: 'TitilliumWeb',
       primarySwatch: themeApp.primarySwatch,

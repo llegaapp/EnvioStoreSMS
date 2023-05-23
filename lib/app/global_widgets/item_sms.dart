@@ -162,7 +162,7 @@ class _ItemSmsState extends State<ItemSms> {
                                       Icons.done_all,
                                       size: 20,
                                       color: themeApp.colorCompanion,
-                                    )
+                                    ),
                                   ],
                                 ),
                               ],

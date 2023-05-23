@@ -62,7 +62,6 @@ class LocalDB {
     if (where == Constant.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
     if (where == Constant.SMS_STATUS_ALL) _where = '';
     String query = "SELECT * FROM SMS $_where ORDER BY ID DESC ";
-    print(query);
     final List<Map<String, dynamic>> itemsMap = await database.rawQuery(query);
     return List.generate(
         itemsMap.length,

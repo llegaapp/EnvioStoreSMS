@@ -1,16 +1,14 @@
 import 'dart:developer';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:background_sms/background_sms.dart';
+import 'package:flutter_sms_dual/flutter_sms_dual.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sim_data/sim_data.dart';
 import 'package:sim_data/sim_model.dart';
 import '../data_source/api_clients.dart';
 import '../data_source/prefered_controller.dart';
-import 'package:uuid/uuid.dart';
-
 import '../models/phoneCompany.dart';
 import '../models/smsPush.dart';
 import '../modules/home/home_controller.dart';
@@ -19,6 +17,8 @@ import 'constant.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class Utils extends GetxController {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   static var prefs = Get.put(PreferedController());
   static int delayed = 1000;
   static int delayedSecond = 500;
@@ -31,6 +31,8 @@ class Utils extends GetxController {
     var statusSMS = await Permission.sms.status;
     if (!statusSMS.isGranted) {
       value = await Permission.sms.request().isGranted;
+    } else {
+      Utils.sendBulkMessage();
     }
     return value;
   }
@@ -87,23 +89,24 @@ class Utils extends GetxController {
     final mainRepository = MainRepository(apiClients);
     Get.put(mainRepository);
     int send = 0;
-    var result = await BackgroundSms.sendMessage(
-        phoneNumber: phoneNumber, message: message, simSlot: simSlot);
-    if (result == SmsStatus.sent) {
+    List<String> recipients = [];
+    recipients.add(phoneNumber);
+    var result = await FlutterSmsDual().sendSMS(
+        message: message,
+        recipients: recipients,
+        sendDirect: true,
+        sendFromDefaultSIM: false,
+        sim: simSlot.toString());
+
+    if (result == Constant.SMS_SEND) {
       send = 1;
     }
     await Get.find<MainRepository>().updateSmsDB(id: id, send: send);
   }
 
-  static String uuidGenerator(bool rebuild) {
-    var _uuid = Uuid();
-    String uuid = Utils.prefs.uuidDevice;
-    if (Utils.prefs.uuidDevice.isEmpty) {
-      uuid = _uuid.v1();
-    }
-    if (rebuild == true) uuid = _uuid.v1();
-    Utils.prefs.uuidDevice = uuid;
-    return uuid;
+  static Future<bool> canSendSMS() async {
+    bool _result = await FlutterSmsDual().canSendSMS();
+    return _result;
   }
 
   static Future<bool> areSimCards() async {
@@ -112,11 +115,10 @@ class Utils extends GetxController {
 
     SimData simData;
     try {
-      bool isGranted = await Utils.solicitarStatusPhone();
+      await Utils.solicitarStatusPhone();
       simData = await SimDataPlugin.getSimData();
       _simData = simData;
     } catch (e) {
-      debugPrint(e.toString());
       _simData = null;
     }
     var cards = _simData?.cards.reversed.toList();
@@ -138,8 +140,7 @@ class Utils extends GetxController {
         Utils.prefs.itemsPhoneCompany = itemsPhoneCompany;
       }
     }
-    print(Utils.prefs.currentSim.toString());
-    print('Utils.prefs.currentSimName.toString()');
+
     log(Utils.prefs.currentSimName.toString());
     return _areSimCards;
   }

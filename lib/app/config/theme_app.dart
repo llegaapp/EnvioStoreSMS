@@ -30,6 +30,8 @@ class ThemeApp {
   TextStyle? text12dWhite;
   TextStyle? text12dRed;
   TextStyle? text11dRed;
+  TextStyle? text11d;
+  TextStyle? text11dGreen;
   TextStyle? text14Black;
   TextStyle? text14boldBlack400;
   TextStyle? text16400Gray;
@@ -84,9 +86,16 @@ class ThemeApp {
         color: colorPrimaryRed,
         fontSize: 12,
         fontFamily: 'Titillium Web Black');
+    text11dGreen = TextStyle(
+        color: colorCompanion,
+        fontSize: 11,
+        fontFamily: 'Titillium Web Black');
+    text11dGreen = TextStyle(
+        fontSize: 11,
+        fontFamily: 'Titillium Web Black');
     text12Red = TextStyle(
         color: colorPrimaryOrange,
-        fontSize: 12,
+        fontSize: 11,
         fontFamily: 'Titillium Web Black');
     text12Black = TextStyle(
         color: colorBlack, fontSize: 12, fontFamily: 'Titillium Web Black');

@@ -1,4 +1,3 @@
-import 'package:background_sms/background_sms.dart';
 import 'package:enviostoresms/app/models/smsPush.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -16,17 +15,12 @@ class Listeners {
   static final _typeMessage = 'message';
 
   static listenPush(Map<String, dynamic> messageFb) async {
-    List<SmsPush> smsPushList = [];
     final apiClients = ApiClients();
     final mainRepository = MainRepository(apiClients);
     Get.put(mainRepository);
 
     final toList = messageFb[_typeTo].toString().split(',');
     String message = messageFb[_typeMessage].toString();
-    print('messageFb');
-    print(messageFb);
-    print(Utils.prefs.currentSimName!);
-    print(Utils.prefs.currentSim! + 1);
 
     for (var i = 0; i < toList.length; i++) {
       SmsPush smsPush = new SmsPush();
@@ -49,7 +43,6 @@ class Listeners {
     } else {
       Get.find<HomeController>().loadData();
       await Utils.solicitarEnvioSMS();
-
     }
   }
 }

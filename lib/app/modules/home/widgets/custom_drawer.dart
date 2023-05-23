@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../main.dart';
 import '../../../config/string_app.dart';
@@ -58,24 +59,17 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
             ListTile(
                 leading: Icon(Icons.key_sharp,color: themeApp.colorPrimaryOrange,),
                 title: Text(
-                  cambiarClaveStr,
+                  permisosAppStr,
                   style: themeApp.text14Black,
                 ),
                 onTap: () async {
                   Get.back();
-                  _.confirmDialog(
-                      title: cambiarClaveStr,
-                      onPressed: () async {
-                        Utils.uuidGenerator(true);
-                        Get.back();
-                        await Get.snackbar(
-                            claveSecretaStr, cambioClaveSecretaStr);
-                      });
+                  openAppSettings();
                 }),
             ListTile(
-                leading: Icon(Icons.settings,color: themeApp.colorPrimaryOrange,),
+                leading: Icon(Icons.perm_device_information,color: themeApp.colorPrimaryOrange,),
                 title: Text(
-                  configStr,
+                  deviceIdStr,
                   style: themeApp.text14Black,
                 ),
                 onTap: () {

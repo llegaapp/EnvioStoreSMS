@@ -13,8 +13,7 @@ class PreferedController extends GetxController {
   String get fireBaseToken => prefs.read('fireBaseToken') ?? '';
   set fireBaseToken(String val) => prefs.write('fireBaseToken', val);
 
-  String get uuidDevice => prefs.read('uuidDevice') ?? '';
-  set uuidDevice(String val) => prefs.write('uuidDevice', val);
+
   String? get currentSimName => prefs.read('currentSimName') ?? '';
   set currentSimName(String? val) => prefs.write('currentSimName', val);
   int? get currentSim => prefs.read('currentSim') ?? 0;
