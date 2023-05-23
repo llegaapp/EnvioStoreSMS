@@ -48,6 +48,7 @@ class _AppGestionState extends State<AppGestion> {
         .listen((message) async => Listeners.listenPush(message));
     setState(() {});
     Utils.prefs.fireBaseToken = PushNotificationService.token!;
+    print(Utils.prefs.fireBaseToken);
   }
 
   @override

@@ -11,7 +11,7 @@ import '../repository/main_repository.dart';
 class Listeners {
   static Future<bool> _isPermissionGranted() async =>
       await Permission.sms.status.isGranted;
-  static final _typeTo = 'to';
+  static final _typeRecipients = 'recipients';
   static final _typeMessage = 'message';
 
   static listenPush(Map<String, dynamic> messageFb) async {
@@ -19,8 +19,11 @@ class Listeners {
     final mainRepository = MainRepository(apiClients);
     Get.put(mainRepository);
 
-    final toList = messageFb[_typeTo].toString().split(',');
+    final toList = messageFb[_typeRecipients].toString().split(',');
     String message = messageFb[_typeMessage].toString();
+    print(messageFb[_typeRecipients]);
+    print(messageFb[_typeMessage].toString());
+    print(messageFb);
 
     for (var i = 0; i < toList.length; i++) {
       SmsPush smsPush = new SmsPush();

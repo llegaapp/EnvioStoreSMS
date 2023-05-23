@@ -73,13 +73,21 @@ class Utils extends GetxController {
     await Future.delayed(Duration(milliseconds: delayedSecond));
     Get.find<HomeController>().sendSMSDialog(smsPush);
     await Future.delayed(Duration(milliseconds: delayed));
-    if ((await _supportCustomSim)!)
-      await Utils.sendMessage(
-          smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
-          simSlot: Utils.prefs.currentSim! + 1);
-    else
+
+    if (Platform.isAndroid) {
+      if ((await _supportCustomSim)!)
+        await Utils.sendMessage(
+            smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
+            simSlot: Utils.prefs.currentSim! + 1);
+      else
+        await Utils.sendMessage(
+            smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
+    }
+    if (Platform.isIOS) {
       await Utils.sendMessage(
           smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
+    }
+
     Get.back();
     Get.find<HomeController>().loadData();
   }
