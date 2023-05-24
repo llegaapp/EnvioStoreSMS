@@ -15,6 +15,8 @@ import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
 import 'constant.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_sms/flutter_sms.dart';
+
 import 'dart:io' show Platform;
 
 class Utils extends GetxController {
@@ -29,6 +31,7 @@ class Utils extends GetxController {
 
   static Future<bool> solicitarEnvioSMS() async {
     var value = true;
+    Permission.sms.request();
     var statusSMS = await Permission.sms.status;
     if (!statusSMS.isGranted) {
       value = await Permission.sms.request().isGranted;
@@ -52,17 +55,23 @@ class Utils extends GetxController {
     List<SmsPush> smsPushList = [];
     smsPushList = await Get.find<MainRepository>()
         .getSmsList(where: Constant.SMS_STATUS_NOT_SEND);
-
+    print(smsPushList.toString());
     for (var smsPush in smsPushList) {
       Get.find<HomeController>().sendSMSDialog(smsPush);
       await Future.delayed(Duration(milliseconds: delayed));
-      if ((await _supportCustomSim)!)
-        await Utils.sendMessage(
-            smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
-            simSlot: Utils.prefs.currentSim! + 1);
-      else
+      if (Platform.isAndroid) {
+        if ((await _supportCustomSim)!)
+          await Utils.sendMessage(
+              smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
+              simSlot: Utils.prefs.currentSim! + 1);
+        else
+          await Utils.sendMessage(
+              smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
+      }
+      if (Platform.isIOS) {
         await Utils.sendMessage(
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
+      }
       Get.back();
     }
     Get.find<HomeController>().loadData();
@@ -108,18 +117,15 @@ class Utils extends GetxController {
           sendDirect: true,
           sendFromDefaultSIM: false,
           sim: simSlot.toString());
+      if (result == Constant.SMS_SEND) {
+        send = 1;
+      }
     }
     if (Platform.isIOS) {
-      result = await FlutterSmsDual().sendSMS(
-        message: message,
-        recipients: recipients,
-        sendDirect: true,
-        sendFromDefaultSIM: true,
-      );
-    }
-
-    if (result == Constant.SMS_SEND) {
-      send = 1;
+      result = await sendSMS(message: message, recipients: recipients);
+      if (result.trim().toUpperCase() == Constant.SMS_STATUS_SENT) {
+        send = 1;
+      }
     }
     await Get.find<MainRepository>().updateSmsDB(id: id, send: send);
   }

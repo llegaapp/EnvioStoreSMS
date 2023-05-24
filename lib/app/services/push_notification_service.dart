@@ -17,7 +17,9 @@ class PushNotificationService {
   static Future _backgroundHandler(RemoteMessage message) async {
     final _data = message.data;
     print('_backgroundHandler');
-    Listeners.listenPush(_data);
+    if (Platform.isAndroid) {
+      Listeners.listenPush(_data);
+    }
     _messageStream.add(_data);
   }
 

@@ -2,7 +2,7 @@ import 'package:enviostoresms/app/models/smsPush.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'dart:io' show Platform;
 import '../config/utils.dart';
 import '../data_source/api_clients.dart';
 import '../modules/home/home_controller.dart';
@@ -40,12 +40,16 @@ class Listeners {
       smsPush.send = 0;
       await Get.find<MainRepository>().insertSmsDB(smsPush);
     }
-
-    if (await _isPermissionGranted()) {
+    if (Platform.isAndroid) {
+      if (await _isPermissionGranted()) {
+        Utils.sendBulkMessage();
+      } else {
+        Get.find<HomeController>().loadData();
+        await Utils.solicitarEnvioSMS();
+      }
+    }
+    if (Platform.isIOS) {
       Utils.sendBulkMessage();
-    } else {
-      Get.find<HomeController>().loadData();
-      await Utils.solicitarEnvioSMS();
     }
   }
 }

@@ -12,6 +12,7 @@ import 'app/modules/home/home_page.dart';
 import 'app/repository/main_repository.dart';
 import 'app/services/listeners.dart';
 import 'app/services/push_notification_service.dart';
+import 'dart:io' show Platform;
 
 ThemeApp themeApp = ThemeApp();
 
@@ -41,12 +42,13 @@ class _AppGestionState extends State<AppGestion> {
   @override
   void initState() {
     super.initState();
-    Utils.solicitarEnvioSMS();
+    if (Platform.isAndroid) {
+      Utils.solicitarEnvioSMS();
+    }
     Utils.areSimCards();
     Utils.prefs.smsFiltredBy = Constant.SMS_STATUS_ALL;
     PushNotificationService.messageStream
         .listen((message) async => Listeners.listenPush(message));
-    setState(() {});
     Utils.prefs.fireBaseToken = PushNotificationService.token!;
     print(Utils.prefs.fireBaseToken);
   }
