@@ -4,9 +4,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../main.dart';
 import '../../../config/string_app.dart';
-import '../../../config/utils.dart';
 import '../../../repository/main_repository.dart';
 import '../home_controller.dart';
+import 'dart:io' show Platform;
 
 class SideBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -27,21 +27,26 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(
               height: 20,
             ),
+            (Platform.isAndroid)
+                ? ListTile(
+                    leading: Icon(
+                      Icons.sim_card,
+                      color: themeApp.colorPrimaryOrange,
+                    ),
+                    title: Text(
+                      seleccioneSimStr,
+                      style: themeApp.text14Black,
+                    ),
+                    onTap: () {
+                      Get.back();
+                      _.selectSimCard();
+                    })
+                : Container(),
             ListTile(
                 leading: Icon(
-                  Icons.sim_card,
+                  Icons.delete_forever,
                   color: themeApp.colorPrimaryOrange,
                 ),
-                title: Text(
-                  seleccioneSimStr,
-                  style: themeApp.text14Black,
-                ),
-                onTap: () {
-                  Get.back();
-                  _.selectSimCard();
-                }),
-            ListTile(
-                leading: Icon(Icons.delete_forever,color: themeApp.colorPrimaryOrange,),
                 title: Text(
                   borraHistorialStr,
                   style: themeApp.text14Black,
@@ -57,7 +62,10 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
                       });
                 }),
             ListTile(
-                leading: Icon(Icons.key_sharp,color: themeApp.colorPrimaryOrange,),
+                leading: Icon(
+                  Icons.key_sharp,
+                  color: themeApp.colorPrimaryOrange,
+                ),
                 title: Text(
                   permisosAppStr,
                   style: themeApp.text14Black,
@@ -67,7 +75,10 @@ class SideBar extends StatelessWidget implements PreferredSizeWidget {
                   openAppSettings();
                 }),
             ListTile(
-                leading: Icon(Icons.perm_device_information,color: themeApp.colorPrimaryOrange,),
+                leading: Icon(
+                  Icons.perm_device_information,
+                  color: themeApp.colorPrimaryOrange,
+                ),
                 title: Text(
                   deviceIdStr,
                   style: themeApp.text14Black,
