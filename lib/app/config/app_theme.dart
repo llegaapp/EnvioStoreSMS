@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeApp {
+class AppTheme {
   late MaterialColor primarySwatch;
 
   Color colorGrey = Color.fromARGB(255, 209, 210, 205);

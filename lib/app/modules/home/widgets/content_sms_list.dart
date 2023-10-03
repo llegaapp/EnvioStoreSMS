@@ -3,8 +3,8 @@ import 'package:enviostoresms/app/modules/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../config/string_app.dart';
-import '../../../config/utils.dart';
+import '../../../config/app_string.dart';
+import '../../../config/app_utils.dart';
 import '../../../models/smsPush.dart';
 
 class ContentSmsList extends StatelessWidget {
@@ -29,7 +29,7 @@ class ContentSmsList extends StatelessWidget {
                     _.confirmDialog(
                         title: reenviarMensajeStr,
                         onPressed: () {
-                          Utils.sendSingleMessage(item);
+                          AppUtils.sendSingleMessage(item);
                         });
                   },
                 ),

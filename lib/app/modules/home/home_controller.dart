@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sim_data/sim_data.dart';
 import 'package:sim_data/sim_model.dart';
-import '../../config/constant.dart';
+import '../../config/app_constants.dart';
 import '../../config/responsive_app.dart';
-import '../../config/string_app.dart';
-import '../../config/utils.dart';
+import '../../config/app_string.dart';
+import '../../config/app_utils.dart';
 import '../../global_widgets/button1.dart';
 import '../../global_widgets/button2.dart';
 import '../../global_widgets/custom_menu_float/screens/quds_popup_menu.dart';
@@ -48,13 +48,13 @@ class HomeController extends GetxController {
     waits(true);
     itemsSms.clear();
     itemsSms = await Get.find<MainRepository>()
-        .getSmsList(where: Constant.SMS_STATUS_ALL);
-    Utils.prefs.count_sms_all = await Get.find<MainRepository>()
-        .getSmsCount(where: Constant.SMS_STATUS_ALL);
-    Utils.prefs.count_sms_send = await Get.find<MainRepository>()
-        .getSmsCount(where: Constant.SMS_STATUS_SEND);
-    Utils.prefs.count_sms_not_send = await Get.find<MainRepository>()
-        .getSmsCount(where: Constant.SMS_STATUS_NOT_SEND);
+        .getSmsList(where: AppConstants.SMS_STATUS_ALL);
+    AppUtils.prefs.count_sms_all = await Get.find<MainRepository>()
+        .getSmsCount(where: AppConstants.SMS_STATUS_ALL);
+    AppUtils.prefs.count_sms_send = await Get.find<MainRepository>()
+        .getSmsCount(where: AppConstants.SMS_STATUS_SEND);
+    AppUtils.prefs.count_sms_not_send = await Get.find<MainRepository>()
+        .getSmsCount(where: AppConstants.SMS_STATUS_NOT_SEND);
 
     itemsSmsAux = itemsSms;
     waits(false);
@@ -161,7 +161,7 @@ class HomeController extends GetxController {
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  Utils.prefs.fireBaseToken,
+                                  AppUtils.prefs.fireBaseToken,
                                   style: themeApp.text14Black,
                                 ),
                               )),
@@ -176,7 +176,7 @@ class HomeController extends GetxController {
                                   ),
                                   onPressed: () {
                                     Clipboard.setData(ClipboardData(
-                                        text: Utils.prefs.fireBaseToken));
+                                        text: AppUtils.prefs.fireBaseToken));
                                     Get.snackbar(
                                         elementoCopiadoStr, deviceIdStr);
                                   },
@@ -230,10 +230,10 @@ class HomeController extends GetxController {
   }
 
   selectSimCard() async {
-    List<PhoneCompany> cards = Utils.prefs.itemsPhoneCompany;
+    List<PhoneCompany> cards = AppUtils.prefs.itemsPhoneCompany;
     bool isGranted = false;
     try {
-      isGranted = await Utils.solicitarStatusPhone();
+      isGranted = await AppUtils.solicitarStatusPhone();
       if (!isGranted) return;
       if (loading) return;
       loading = false;
@@ -272,7 +272,7 @@ class HomeController extends GetxController {
                                       )
                                     : ListTile(
                                         tileColor:
-                                            Utils.prefs.currentSim.toString() ==
+                                            AppUtils.prefs.currentSim.toString() ==
                                                     cards[index]
                                                         .slotIndex
                                                         .toString()
@@ -280,7 +280,7 @@ class HomeController extends GetxController {
                                                 : null,
                                         leading: Icon(
                                           Icons.sim_card,
-                                          color: Utils.prefs.currentSim
+                                          color: AppUtils.prefs.currentSim
                                                       .toString() ==
                                                   cards[index]
                                                       .slotIndex
@@ -290,7 +290,7 @@ class HomeController extends GetxController {
                                         ),
                                         title: Text(
                                             'Sim ${cards[index].slotIndex}',
-                                            style: Utils.prefs.currentSim
+                                            style: AppUtils.prefs.currentSim
                                                         .toString() ==
                                                     cards[index]
                                                         .slotIndex
@@ -310,9 +310,9 @@ class HomeController extends GetxController {
                                           ],
                                         ),
                                         onTap: () {
-                                          Utils.prefs.currentSim =
+                                          AppUtils.prefs.currentSim =
                                               cards[index].slotIndex;
-                                          Utils.prefs.currentSimName =
+                                          AppUtils.prefs.currentSimName =
                                               cards[index].companyName;
                                           update();
                                           Get.back();
@@ -435,7 +435,7 @@ class HomeController extends GetxController {
     String valueFilter = value.toString();
     itemsSms = itemsSmsAux;
     update();
-    if (Constant.SMS_STATUS_ALL != fitredBy) {
+    if (AppConstants.SMS_STATUS_ALL != fitredBy) {
       List<SmsPush> result = itemsSms.where((item) {
         return ((item.send!.toString().contains(valueFilter)));
       }).toList();
@@ -452,23 +452,23 @@ class HomeController extends GetxController {
           Icons.format_list_bulleted,
           themeApp.colorPrimaryBlue,
           todosStr,
-          Utils.prefs.count_sms_all,
-          Constant.SMS_STATUS_ALL,
-          Constant.SMS_STATUS_ALL_ID),
+          AppUtils.prefs.count_sms_all,
+          AppConstants.SMS_STATUS_ALL,
+          AppConstants.SMS_STATUS_ALL_ID),
       itemSuperviorPopUp(
           Icons.done_all,
           themeApp.colorCompanion,
           enviadosStr,
-          Utils.prefs.count_sms_send,
-          Constant.SMS_STATUS_SEND,
-          Constant.SMS_STATUS_SEND_ID),
+          AppUtils.prefs.count_sms_send,
+          AppConstants.SMS_STATUS_SEND,
+          AppConstants.SMS_STATUS_SEND_ID),
       itemSuperviorPopUp(
           Icons.info_rounded,
           themeApp.colorPrimaryRed,
           sinEnviarStr,
-          Utils.prefs.count_sms_not_send,
-          Constant.SMS_STATUS_NOT_SEND,
-          Constant.SMS_STATUS_NOT_SEND_ID),
+          AppUtils.prefs.count_sms_not_send,
+          AppConstants.SMS_STATUS_NOT_SEND,
+          AppConstants.SMS_STATUS_NOT_SEND_ID),
     ];
   }
 
@@ -478,13 +478,13 @@ class HomeController extends GetxController {
         builder: (c) => InkWell(
               onTap: () {
                 setFilterStatus(filtredBy.toString(), value);
-                Utils.prefs.smsFiltredBy = filtredBy;
+                AppUtils.prefs.smsFiltredBy = filtredBy;
                 Get.back();
                 update();
               },
               child: Container(
                 height: 50,
-                color: Utils.prefs.smsFiltredBy == filtredBy
+                color: AppUtils.prefs.smsFiltredBy == filtredBy
                     ? themeApp.colorGenericBox
                     : Colors.white,
                 padding: EdgeInsets.only(left: 20, right: 20),
@@ -506,7 +506,7 @@ class HomeController extends GetxController {
                       child: Text(
                         txtTitle,
                         overflow: TextOverflow.ellipsis,
-                        style: Utils.prefs.smsFiltredBy == filtredBy
+                        style: AppUtils.prefs.smsFiltredBy == filtredBy
                             ? themeApp.text16600PrimaryBlue
                             : themeApp.text16boldBlack,
                       ),

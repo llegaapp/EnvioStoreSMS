@@ -1,5 +1,5 @@
 import '../../main.dart';
-import '../config/string_app.dart';
+import '../config/app_string.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 

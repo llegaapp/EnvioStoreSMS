@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io' show Platform;
-import '../config/utils.dart';
+import '../config/app_utils.dart';
 import '../data_source/api_clients.dart';
 import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
@@ -42,14 +42,14 @@ class Listeners {
     }
     if (Platform.isAndroid) {
       if (await _isPermissionGranted()) {
-        Utils.sendBulkMessage();
+        AppUtils.sendBulkMessage();
       } else {
         Get.find<HomeController>().loadData();
-        await Utils.solicitarEnvioSMS();
+        await AppUtils.solicitarEnvioSMS();
       }
     }
     if (Platform.isIOS) {
-      Utils.sendBulkMessage();
+      AppUtils.sendBulkMessage();
     }
   }
 }

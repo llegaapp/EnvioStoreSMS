@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../main.dart';
-import '../config/constant.dart';
+import '../config/app_constants.dart';
 import '../config/responsive_app.dart';
-import '../config/string_app.dart';
+import '../config/app_string.dart';
 
 class NoSms extends StatelessWidget {
   @override
@@ -15,7 +15,7 @@ class NoSms extends StatelessWidget {
           Align(
               alignment: Alignment.center,
               child: Image.asset(
-                Constant.LOGO_ALONE,
+                AppConstants.LOGO_ALONE,
                 width: 250,
               )),
           Padding(

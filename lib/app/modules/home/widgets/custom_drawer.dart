@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../main.dart';
-import '../../../config/string_app.dart';
+import '../../../config/app_string.dart';
 import '../../../repository/main_repository.dart';
 import '../home_controller.dart';
 import 'dart:io' show Platform;

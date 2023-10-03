@@ -2,8 +2,8 @@ import 'package:enviostoresms/app/models/smsPush.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../config/constant.dart';
-import '../config/utils.dart';
+import '../config/app_constants.dart';
+import '../config/app_utils.dart';
 
 class LocalDB {
   static Future<Database> _openDB() async {
@@ -23,7 +23,7 @@ class LocalDB {
     queries.add(_sql);
 
     // Crea la base de datos en caso de que no exista y crea las tablas
-    _nameDB = Utils.getNameDB();
+    _nameDB = AppUtils.getNameDB();
     return openDatabase(join(await getDatabasesPath(), _nameDB),
         onCreate: (db, version) async {
       for (String query in queries) {
@@ -47,9 +47,9 @@ class LocalDB {
   static Future<int?> getSmsCount({required String where}) async {
     Database database = await _openDB();
     String _where = '';
-    if (where == Constant.SMS_STATUS_SEND) _where = 'WHERE send= 1';
-    if (where == Constant.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
-    if (where == Constant.SMS_STATUS_ALL) _where = '';
+    if (where == AppConstants.SMS_STATUS_SEND) _where = 'WHERE send= 1';
+    if (where == AppConstants.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
+    if (where == AppConstants.SMS_STATUS_ALL) _where = '';
     var result = Sqflite.firstIntValue(await database
         .rawQuery("SELECT count(*) as num FROM SMS $_where ORDER BY ID DESC "));
     return result;
@@ -58,9 +58,9 @@ class LocalDB {
   static Future<List<SmsPush>> getSmsList({required String where}) async {
     Database database = await _openDB();
     String _where = '';
-    if (where == Constant.SMS_STATUS_SEND) _where = 'WHERE send= 1';
-    if (where == Constant.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
-    if (where == Constant.SMS_STATUS_ALL) _where = '';
+    if (where == AppConstants.SMS_STATUS_SEND) _where = 'WHERE send= 1';
+    if (where == AppConstants.SMS_STATUS_NOT_SEND) _where = 'WHERE send= 0';
+    if (where == AppConstants.SMS_STATUS_ALL) _where = '';
     String query = "SELECT * FROM SMS $_where ORDER BY ID DESC ";
     final List<Map<String, dynamic>> itemsMap = await database.rawQuery(query);
     return List.generate(

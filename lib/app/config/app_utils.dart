@@ -13,13 +13,13 @@ import '../models/phoneCompany.dart';
 import '../models/smsPush.dart';
 import '../modules/home/home_controller.dart';
 import '../repository/main_repository.dart';
-import 'constant.dart';
+import 'app_constants.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
 import 'dart:io' show Platform;
 
-class Utils extends GetxController {
+class AppUtils extends GetxController {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static var prefs = Get.put(PreferedController());
@@ -36,7 +36,7 @@ class Utils extends GetxController {
     if (!statusSMS.isGranted) {
       value = await Permission.sms.request().isGranted;
     } else {
-      Utils.sendBulkMessage();
+      AppUtils.sendBulkMessage();
     }
     return value;
   }
@@ -54,22 +54,22 @@ class Utils extends GetxController {
   static sendBulkMessage() async {
     List<SmsPush> smsPushList = [];
     smsPushList = await Get.find<MainRepository>()
-        .getSmsList(where: Constant.SMS_STATUS_NOT_SEND);
+        .getSmsList(where: AppConstants.SMS_STATUS_NOT_SEND);
     print(smsPushList.toString());
     for (var smsPush in smsPushList) {
       Get.find<HomeController>().sendSMSDialog(smsPush);
       await Future.delayed(Duration(milliseconds: delayed));
       if (Platform.isAndroid) {
         if ((await _supportCustomSim)!)
-          await Utils.sendMessage(
+          await AppUtils.sendMessage(
               smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
-              simSlot: Utils.prefs.currentSim! + 1);
+              simSlot: AppUtils.prefs.currentSim! + 1);
         else
-          await Utils.sendMessage(
+          await AppUtils.sendMessage(
               smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
       }
       if (Platform.isIOS) {
-        await Utils.sendMessage(
+        await AppUtils.sendMessage(
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
       }
       Get.back();
@@ -85,15 +85,15 @@ class Utils extends GetxController {
 
     if (Platform.isAndroid) {
       if ((await _supportCustomSim)!)
-        await Utils.sendMessage(
+        await AppUtils.sendMessage(
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString(),
-            simSlot: Utils.prefs.currentSim! + 1);
+            simSlot: AppUtils.prefs.currentSim! + 1);
       else
-        await Utils.sendMessage(
+        await AppUtils.sendMessage(
             smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
     }
     if (Platform.isIOS) {
-      await Utils.sendMessage(
+      await AppUtils.sendMessage(
           smsPush.id, smsPush.phone.toString(), smsPush.message.toString());
     }
 
@@ -117,13 +117,13 @@ class Utils extends GetxController {
           sendDirect: true,
           sendFromDefaultSIM: false,
           sim: simSlot.toString());
-      if (result == Constant.SMS_SEND) {
+      if (result == AppConstants.SMS_SEND) {
         send = 1;
       }
     }
     if (Platform.isIOS) {
       result = await sendSMS(message: message, recipients: recipients);
-      if (result.trim().toUpperCase() == Constant.SMS_STATUS_SENT) {
+      if (result.trim().toUpperCase() == AppConstants.SMS_STATUS_SENT) {
         send = 1;
       }
     }
@@ -142,7 +142,7 @@ class Utils extends GetxController {
 
       SimData simData;
       try {
-        await Utils.solicitarStatusPhone();
+        await AppUtils.solicitarStatusPhone();
         simData = await SimDataPlugin.getSimData();
         _simData = simData;
       } catch (e) {
@@ -154,9 +154,9 @@ class Utils extends GetxController {
       if (totalCards! > 0) {
         _areSimCards = true;
 
-        if (Utils.prefs.currentSim == 0) {
-          Utils.prefs.currentSim = cards?.first.slotIndex;
-          Utils.prefs.currentSimName = cards?.first.carrierName;
+        if (AppUtils.prefs.currentSim == 0) {
+          AppUtils.prefs.currentSim = cards?.first.slotIndex;
+          AppUtils.prefs.currentSimName = cards?.first.carrierName;
 
           for (var _item in cards!) {
             PhoneCompany itemsCompany = new PhoneCompany();
@@ -164,16 +164,16 @@ class Utils extends GetxController {
             itemsCompany.companyName = _item.carrierName;
             itemsPhoneCompany.add(itemsCompany);
           }
-          Utils.prefs.itemsPhoneCompany = itemsPhoneCompany;
+          AppUtils.prefs.itemsPhoneCompany = itemsPhoneCompany;
         }
       }
     }
     if (Platform.isIOS) {
       _areSimCards = true;
-      Utils.prefs.currentSimName = '1';
+      AppUtils.prefs.currentSimName = '1';
     }
 
-    log(Utils.prefs.currentSimName.toString());
+    log(AppUtils.prefs.currentSimName.toString());
     return _areSimCards;
   }
 

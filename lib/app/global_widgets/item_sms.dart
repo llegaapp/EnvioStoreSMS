@@ -1,10 +1,10 @@
 import 'package:enviostoresms/app/config/responsive_app.dart';
-import 'package:enviostoresms/app/config/utils.dart';
+import 'package:enviostoresms/app/config/app_utils.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:enviostoresms/main.dart';
 import 'package:flutter/material.dart';
 
-import '../config/string_app.dart';
+import '../config/app_string.dart';
 
 class ItemSms extends StatefulWidget {
   final int? index;
@@ -43,7 +43,7 @@ class _ItemSmsState extends State<ItemSms> {
       ),
       child: Column(
         children: [
-          Text(Utils.dateFormat(widget.date!)),
+          Text(AppUtils.dateFormat(widget.date!)),
           Container(
             decoration: BoxDecoration(
               color: themeApp.colorWhite3,

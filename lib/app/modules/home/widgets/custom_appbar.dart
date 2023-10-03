@@ -2,8 +2,8 @@ import 'package:enviostoresms/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:enviostoresms/app/global_widgets/custom_menu_float/quds_popup_menu.dart';
-import '../../../config/constant.dart';
-import '../../../config/string_app.dart';
+import '../../../config/app_constants.dart';
+import '../../../config/app_string.dart';
 import '../../../global_widgets/search_text_field.dart';
 import '../home_controller.dart';
 
